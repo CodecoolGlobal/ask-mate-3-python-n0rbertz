@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 from flask import Flask, render_template, redirect, request, url_for
 import data_handler
 
+=======
+from flask import Flask
+>>>>>>> da9e982313df4226e8834071a4b6397627d5b861
 
 app = Flask(__name__)
 
 
+<<<<<<< HEAD
 app.config['SECRET_KEY'] = 'dd9d469c72ee3c7c46772dc782eba502'
 
 
@@ -142,3 +147,12 @@ def vote_down_answer(answer_id):
 
 if __name__ == "__main__":
     app.run(debug=True)
+=======
+@app.route("/")
+def hello():
+    return "Hello World!"
+
+
+if __name__ == "__main__":
+    app.run()
+>>>>>>> da9e982313df4226e8834071a4b6397627d5b861
