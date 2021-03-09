@@ -89,20 +89,14 @@ def add_answer(question_id):
 
 @app.route('/question/<question_id>/vote_up')
 def vote_up_question(question_id):
-    questions = data_handler.get_data_from_file('sample_data/question.csv')
-    questions = [x for x in questions if x != []]
-    questions[int(question_id)][3] = int(questions[int(question_id)][3]) + 1
-    data_handler.write_questions('sample_data/question.csv', questions)
+    data_manager.vote_up_question(question_id)
     return redirect('/')
 
 
 
 @app.route('/question/<question_id>/vote_down')
 def vote_down_question(question_id):
-    questions = data_handler.get_data_from_file('sample_data/question.csv')
-    questions = [x for x in questions if x != []]
-    questions[int(question_id)][3] = int(questions[int(question_id)][3]) -1
-    data_handler.write_questions('sample_data/question.csv', questions)
+    data_manager.vote_down_question(question_id)
     return redirect('/')
 
 

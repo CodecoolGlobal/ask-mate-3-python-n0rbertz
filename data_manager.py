@@ -31,3 +31,20 @@ def get_answers_by_question_id(cursor: RealDictCursor, question_id) -> list:
         WHERE question_id = %s"""
     cursor.execute(query, [int(question_id)+1])
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def vote_up_question(cursor: RealDictCursor, question_id) -> list:
+    query=""" 
+        UPDATE question
+        SET vote_number = vote_number + 1
+        WHERE id = %s"""
+    cursor.execute(query, [question_id])
+
+@database_common.connection_handler
+def vote_down_question(cursor: RealDictCursor, question_id) -> list:
+    query=""" 
+        UPDATE question
+        SET vote_number = vote_number - 1
+        WHERE id = %s"""
+    cursor.execute(query, [question_id])
