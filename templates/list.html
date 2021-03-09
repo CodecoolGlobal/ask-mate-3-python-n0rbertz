@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Askmate</title>
+
+</head>
+<body>
+    <caption><h2>Table of questions</h2></caption>
+    <table style="width:100%">
+        <tr>
+            {% for item in questions[0] %}
+            <th>{{ item }}</th>
+            {% endfor %}
+        </tr>
+        {% for question in questions[1:] %}
+        <tr>
+            {% for item in question %}
+                {% if loop.index == 5 %}
+                <td><a href="question/{{ question[0] }}">{{ item }}</a></td>
+                {% else %}
+                <td>{{ item }}</td>
+                {% endif %}
+            {% endfor %}
+        <td><a href="/question/{{ question[0] }}/vote_up">Vote up</a></td>
+        <td><a href="/question/{{ question[0] }}/vote_down">Vote down</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h4><a href="/add-question">Add new question</a></h4>
+</body>
+</html>
