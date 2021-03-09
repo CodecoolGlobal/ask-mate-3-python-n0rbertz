@@ -1,41 +1,33 @@
-<<<<<<< HEAD
+
 from flask import Flask, render_template, redirect, request, url_for
+import data_manager
 import data_handler
 
-=======
 from flask import Flask
->>>>>>> da9e982313df4226e8834071a4b6397627d5b861
+
 
 app = Flask(__name__)
 
 
-<<<<<<< HEAD
+
 app.config['SECRET_KEY'] = 'dd9d469c72ee3c7c46772dc782eba502'
 
 
 @app.route("/")
 @app.route("/list")
 def list_questions():
-    questions = data_handler.get_data_from_file('sample_data/question.csv')
+    questions = data_manager.get_questions()
+    print(questions)
     return render_template('list.html', questions=questions)
 
 
-#@app.route('/question')
-#def get_question_id():
-    #return request.args['id']
 
 @app.route('/question/<question_id>')
 def display_question(question_id):
-    questions = data_handler.get_data_from_file('sample_data/question.csv')
-    questions = [x for x in questions if x != []]
-    answers = data_handler.get_data_from_file('sample_data/answer.csv')
-    answers = [answer for answer in answers if answer != []]
-    answers = [answer for answer in answers if answer[3] == question_id or answer[0] == "id"]
-    for question in questions:
-        if question[0] == question_id:
-            title = question[4]
-            message= question[5]
-    return render_template('display_question.html', title=title, message=message, question_id=question_id, answers=answers)
+    question = data_manager.get_question_by_id(question_id)
+    answers = data_manager.get_answers_by_question_id(question_id)
+    print(answers)
+    return render_template('display_question.html', question=question, answers=answers)
 
 
 
@@ -147,12 +139,3 @@ def vote_down_answer(answer_id):
 
 if __name__ == "__main__":
     app.run(debug=True)
-=======
-@app.route("/")
-def hello():
-    return "Hello World!"
-
-
-if __name__ == "__main__":
-    app.run()
->>>>>>> da9e982313df4226e8834071a4b6397627d5b861

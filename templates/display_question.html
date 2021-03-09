@@ -2,27 +2,29 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Question {{ question_id }}</title>
+    {% for item in question %}
+    <title>Question {{ item.id }}</title>
+    {% endfor %}
 
 </head>
 <body>
+    {% for item in question %}
     <h2>Title</h2>
-        <p>{{ title }}</p>
+        <p>{{ item.title }}</p>
     <h3>Message</h3>
-        <p>{{ message }}</p>
+        <p>{{ item.message }}</p>
+    {% endfor %}
     <hr>
     <h2>Answers:</h2>
     <table style="width:100%">
+        {% for answer in answers %}
         <tr>
-            {% for item in answers[0] %}
-            <th align="left">{{ item }}</th>
-            {% endfor %}
-        </tr>
-        {% for answer in answers[1:] %}
-        <tr>
-            {% for item in answer %}
-                <td>{{ item }}</td>
-            {% endfor %}
+                <td>{{ answer.id }}</td>
+                <td>{{ answer.submission_time }}</td>
+                <td>{{ answer.vote_number }}</td>
+                <td>{{ answer.question_id }}</td>
+                <td>{{ answer.message }}</td>
+                <td>{{ answer.image }}</td>
                 <td><a href="/answer/{{ answer[0] }}/delete">Delete answer</a></td>
                 <td><a href="/answer/{{ answer[0] }}/vote_up">Vote up</a></td>
                 <td><a href="/answer/{{ answer[0] }}/vote_down">Vote down</a></td>

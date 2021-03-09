@@ -8,22 +8,17 @@
 <body>
     <caption><h2>Table of questions</h2></caption>
     <table style="width:100%">
+        {% for question in questions %}
         <tr>
-            {% for item in questions[0] %}
-            <th>{{ item }}</th>
-            {% endfor %}
-        </tr>
-        {% for question in questions[1:] %}
-        <tr>
-            {% for item in question %}
-                {% if loop.index == 5 %}
-                <td><a href="question/{{ question[0] }}">{{ item }}</a></td>
-                {% else %}
-                <td>{{ item }}</td>
-                {% endif %}
-            {% endfor %}
-        <td><a href="/question/{{ question[0] }}/vote_up">Vote up</a></td>
-        <td><a href="/question/{{ question[0] }}/vote_down">Vote down</a></td>
+            <td>{{ question.id }}</td>
+            <td>{{ question.submission_time }}</td>
+            <td>{{ question.view_number }}</td>
+            <td>{{ question.vote_number }}</td>
+            <td><a href="/question/{{ question.id }}">{{ question.title }}</a></td>
+            <td>{{ question.message }}</td>
+            <td>{{ question.image }}</td>
+            <td><a href="/question/{{ question[0] }}/vote_up">Vote up</a></td>
+            <td><a href="/question/{{ question[0] }}/vote_down">Vote down</a></td>
         </tr>
         {% endfor %}
     </table>
