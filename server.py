@@ -2,7 +2,8 @@
 from flask import Flask, render_template, redirect, request, url_for
 import data_manager
 import data_handler
-
+import re
+from operator import itemgetter
 from flask import Flask
 
 
@@ -17,7 +18,6 @@ app.config['SECRET_KEY'] = 'dd9d469c72ee3c7c46772dc782eba502'
 @app.route("/list")
 def list_questions():
     questions = data_manager.get_questions()
-    print(questions)
     return render_template('list.html', questions=questions)
 
 
@@ -25,8 +25,8 @@ def list_questions():
 @app.route('/question/<question_id>')
 def display_question(question_id):
     question = data_manager.get_question_by_id(question_id)
+    print(question)
     answers = data_manager.get_answers_by_question_id(question_id)
-    print(answers)
     return render_template('display_question.html', question=question, answers=answers)
 
 
@@ -44,14 +44,12 @@ def delete_answer(answer_id):
 
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
-    questions = data_handler.get_data_from_file('sample_data/question.csv')
-    questions = [x for x in questions if x != []]
-    for index, question in enumerate(questions):
-        if question[0] == question_id:
-            questions.pop(index)
-    for new_id, question in enumerate(questions[1:], 1):
-        question[0] = new_id
-    data_handler.write_questions('sample_data/question.csv', questions)
+    data_manager.delete_question_tag_by_question_id(question_id)
+    data_manager.delete_comments_by_question_id(question_id)
+    answer_ids = data_manager.get_answer_id_by_question_id(question_id)
+    data_manager.delete_comments_by_answer_id(answer_ids)
+    data_manager.delete_answer_by_question_id(question_id)
+    data_manager.delete_question_by_question_id(question_id)
     return redirect('/')
 
 
