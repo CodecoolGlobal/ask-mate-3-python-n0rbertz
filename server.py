@@ -25,7 +25,6 @@ def list_questions():
 @app.route('/question/<question_id>')
 def display_question(question_id):
     question = data_manager.get_question_by_id(question_id)
-    print(question)
     answers = data_manager.get_answers_by_question_id(question_id)
     return render_template('display_question.html', question=question, answers=answers)
 
@@ -33,12 +32,9 @@ def display_question(question_id):
 
 @app.route('/answer/<answer_id>/delete')
 def delete_answer(answer_id):
-    all_answers = data_handler.get_data_from_file('sample_data/answer.csv')
-    all_answers = [x for x in all_answers if x != []]
-    question_id = all_answers[int(answer_id)][3]
-    all_answers.pop(int(answer_id))
-    data_handler.write_answers('sample_data/answer.csv', all_answers)
-    return redirect(url_for('display_question', question_id=question_id))
+    data_manager.delete_comments_by_answer_id(answer_id)
+    data_manager.delete_answer_by_answer_id(answer_id)
+    return redirect('/')
 
 
 

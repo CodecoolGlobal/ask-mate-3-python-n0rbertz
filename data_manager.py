@@ -103,6 +103,13 @@ def delete_question_by_question_id(cursor: RealDictCursor, question_id):
     cursor.execute(query, [question_id])
 
 
+@database_common.connection_handler
+def delete_answer_by_answer_id(cursor: RealDictCursor, answer_id):
+    query="""
+    DELETE FROM answer
+    WHERE id = %s"""
+    cursor.execute(query, [answer_id])
+
 
 
 

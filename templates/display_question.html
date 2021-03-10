@@ -25,9 +25,9 @@
                 <td>{{ answer.question_id }}</td>
                 <td>{{ answer.message }}</td>
                 <td>{{ answer.image }}</td>
-                <td><a href="/answer/{{ answer[0] }}/delete">Delete answer</a></td>
-                <td><a href="/answer/{{ answer[0] }}/vote_up">Vote up</a></td>
-                <td><a href="/answer/{{ answer[0] }}/vote_down">Vote down</a></td>
+                <td><a href="/answer/{{ answer.id }}/delete">Delete answer</a></td>
+                <td><a href="/answer/{{ answer.id }}/vote_up">Vote up</a></td>
+                <td><a href="/answer/{{ answer.id }}/vote_down">Vote down</a></td>
         </tr>
         {% endfor %}
     </table>
