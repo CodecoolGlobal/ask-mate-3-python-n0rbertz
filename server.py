@@ -108,19 +108,13 @@ def edit_question(question_id):
 
 @app.route('/answer/<answer_id>/vote_up')
 def vote_up_answer(answer_id):
-    answers = data_handler.get_data_from_file('sample_data/answer.csv')
-    answers = [x for x in answers if x != []]
-    answers[int(answer_id)][2] = int(answers[int(answer_id)][2]) + 1
-    data_handler.write_answers('sample_data/answer.csv', answers)
-    return redirect(url_for('display_question', question_id=answers[int(answer_id)][3]))
+    data_manager.vote_up_answer(answer_id)
+    return redirect ('/')
 
 @app.route('/answer/<answer_id>/vote_down')
 def vote_down_answer(answer_id):
-    answers = data_handler.get_data_from_file('sample_data/answer.csv')
-    answers = [x for x in answers if x != []]
-    answers[int(answer_id)][2] = int(answers[int(answer_id)][2]) - 1
-    data_handler.write_answers('sample_data/answer.csv', answers)
-    return redirect(url_for('display_question', question_id=answers[int(answer_id)][3]))
+    data_manager.vote_down_answer(answer_id)
+    return redirect('/')
 
 
 

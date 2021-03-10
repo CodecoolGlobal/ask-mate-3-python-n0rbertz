@@ -111,6 +111,23 @@ def delete_answer_by_answer_id(cursor: RealDictCursor, answer_id):
     cursor.execute(query, [answer_id])
 
 
+@database_common.connection_handler
+def vote_up_answer(cursor: RealDictCursor, answer_id):
+    query=""" 
+        UPDATE answer
+        SET vote_number = vote_number + 1
+        WHERE id = %s"""
+    cursor.execute(query, [answer_id])
+
+
+@database_common.connection_handler
+def vote_down_answer(cursor: RealDictCursor, answer_id):
+    query=""" 
+        UPDATE answer
+        SET vote_number = vote_number - 1
+        WHERE id = %s"""
+    cursor.execute(query, [answer_id])
+
 
 
 
