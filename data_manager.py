@@ -129,8 +129,11 @@ def vote_down_answer(cursor: RealDictCursor, answer_id):
     cursor.execute(query, [answer_id])
 
 
-
-
+@database_common.connection_handler
+def add_question(cursor: RealDictCursor, submission_time, title, message, image):
+    query="""INSERT INTO question
+    VALUES(DEFAULT, %s, 1, 0, %s, %s, %s)"""
+    cursor.execute(query, [submission_time, title, message, image])
 
 
 
