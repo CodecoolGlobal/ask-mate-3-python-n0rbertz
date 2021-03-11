@@ -148,3 +148,12 @@ def edit_question(cursor: RealDictCursor, new_title, new_message, question_id,):
     SET title = %s, message = %s
     WHERE id = %s"""
     cursor.execute(query, [new_title, new_message, int(question_id)])
+
+
+@database_common.connection_handler
+def get_comments_by_question_id(cursor: RealDictCursor, question_id):
+    query="""SELECT submission_time, message
+    FROM comment
+    WHERE question_id = %s"""
+    cursor.execute(query, [int(question_id)])
+    return cursor.fetchall()

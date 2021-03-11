@@ -15,6 +15,13 @@
         <p>{{ item.message }}</p>
     {% endfor %}
     <hr>
+    <h4>Comments</h4>
+    <ul class="question_comment_list">
+        {% for comment in question_comments %}
+        <li>{{ comment.submission_time|string() + " | " + comment.message }}</li>
+        {% endfor %}
+    </ul>
+    <hr>
     <h2>Answers:</h2>
     <table style="width:100%">
         {% for answer in answers %}

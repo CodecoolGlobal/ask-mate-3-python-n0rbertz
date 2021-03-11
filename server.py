@@ -1,10 +1,7 @@
 
 from flask import Flask, render_template, redirect, request, url_for
 import data_manager
-import data_handler
 from datetime import datetime
-import re
-from operator import itemgetter
 from flask import Flask
 
 
@@ -27,7 +24,9 @@ def list_questions():
 def display_question(question_id):
     question = data_manager.get_question_by_id(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
-    return render_template('display_question.html', question=question, answers=answers)
+    question_comments = data_manager.get_comments_by_question_id(question_id)
+    print(question_comments)
+    return render_template('display_question.html', question=question, answers=answers, question_comments=question_comments)
 
 
 
