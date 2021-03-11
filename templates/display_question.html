@@ -29,15 +29,26 @@
     <table style="width:100%">
         {% for answer in answers %}
         <tr>
-                <td>{{ answer.id }}</td>
-                <td>{{ answer.submission_time }}</td>
-                <td>{{ answer.vote_number }}</td>
-                <td>{{ answer.question_id }}</td>
-                <td>{{ answer.message }}</td>
+                <td><strong>{{ answer.id }}</strong></td>
+                <td><strong>{{ answer.submission_time }}</strong></td>
+                <td><strong>{{ answer.vote_number }}</strong></td>
+                <td><strong>{{ answer.message }}</strong></td>
                 <td>{{ answer.image }}</td>
                 <td><a href="/answer/{{ answer.id }}/delete">Delete answer</a></td>
                 <td><a href="/answer/{{ answer.id }}/vote_up">Vote up</a></td>
                 <td><a href="/answer/{{ answer.id }}/vote_down">Vote down</a></td>
+        </tr>
+        <tr>
+            {% for comment in answer_comments %}
+                {% if comment.answer_id == answer.id %}
+                <td style="text-align: center; vertical-align: middle;">{{ comment.submission_time|string() }}</td>
+                <td style="text-align: center; vertical-align: middle;">{{ comment.message }}</td>
+                {% endif %}
+        </tr>
+            {% endfor %}
+                <tr>
+                <td style="text-align: center; vertical-align: middle;"><a href="/answer/{{ answer.id }}/new-comment">Add new comment</a></td>
+                </tr>
         </tr>
         {% endfor %}
     </table>

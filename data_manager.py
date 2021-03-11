@@ -164,3 +164,21 @@ def add_comment_to_question(cursor: RealDictCursor, question_id, message, submis
     (id, question_id, message, submission_time)
     VALUES(DEFAULT, %s, %s, %s)"""
     cursor.execute(query, [int(question_id), message, submission_time])
+
+@database_common.connection_handler
+def get_comments_by_answer_ids(cursor: RealDictCursor, answer_ids):
+    placeholders = ', '.join(['%s'] * len(answer_ids))
+    query = """
+        SELECT answer_id, submission_time, message
+        FROM comment
+        WHERE answer_id IN ({})""".format(placeholders)
+    cursor.execute(query, tuple(answer_ids))
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def add_comment_to_answer(cursor: RealDictCursor, answer_id, message, submission_time):
+    query="""
+    INSERT INTO comment
+    (id, answer_id, message, submission_time)
+    VALUES(DEFAULT, %s, %s, %s)"""
+    cursor.execute(query, [int(answer_id), message, submission_time])

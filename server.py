@@ -25,8 +25,12 @@ def display_question(question_id):
     question = data_manager.get_question_by_id(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
     question_comments = data_manager.get_comments_by_question_id(question_id)
-    print(question_comments)
-    return render_template('display_question.html', question=question, answers=answers, question_comments=question_comments)
+    answer_ids = []
+    for answer in answers:
+        answer_ids.append(answer['id'])
+    answer_comments = data_manager.get_comments_by_answer_ids(answer_ids)
+    print(answer_comments)
+    return render_template('display_question.html', question=question, answers=answers, question_comments=question_comments, answer_comments=answer_comments)
 
 
 
@@ -116,6 +120,15 @@ def add_comment_to_question(question_id):
         return redirect('/')
     return render_template('add_comment_to_question.html')
 
+
+@app.route('/answer/<answer_id>/new-comment', methods=['GET', 'POST'])
+def add_comment_to_answer(answer_id):
+    if request.method == 'POST':
+        message = request.form['message']
+        submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data_manager.add_comment_to_answer(answer_id, message, submission_time)
+        return redirect('/')
+    return render_template('add_comment_to_answer.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
