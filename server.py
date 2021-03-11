@@ -66,7 +66,6 @@ def add_question():
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def add_answer(question_id):
     if request.method == 'POST':
-
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         message = request.form['message']
         image = "None"
@@ -91,11 +90,9 @@ def vote_down_question(question_id):
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
     if request.method == 'POST':
-        questions = data_handler.get_data_from_file('sample_data/question.csv')
-        questions = [x for x in questions if x != []]
-        questions[int(question_id)][4] = request.form['title']
-        questions[int(question_id)][5] = request.form['message']
-        data_handler.write_questions('sample_data/question.csv', questions)
+        new_title = request.form['title']
+        new_message = request.form['message']
+        data_manager.edit_question(new_title, new_message, question_id)
         return redirect('/')
     return render_template('edit_question.html')
 

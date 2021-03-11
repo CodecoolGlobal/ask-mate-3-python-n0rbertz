@@ -142,3 +142,9 @@ def add_answer(cursor: RealDictCursor, submission_time, question_id, message, im
     cursor.execute(query, [submission_time, int(question_id), message, image])
 
 
+@database_common.connection_handler
+def edit_question(cursor: RealDictCursor, new_title, new_message, question_id,):
+    query="""UPDATE question
+    SET title = %s, message = %s
+    WHERE id = %s"""
+    cursor.execute(query, [new_title, new_message, int(question_id)])
