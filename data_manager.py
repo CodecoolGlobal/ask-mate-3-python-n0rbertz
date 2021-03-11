@@ -10,7 +10,8 @@ def get_questions(cursor: RealDictCursor) -> list:
     query = """
         SELECT id, submission_time, view_number, vote_number, title, message, image
         FROM question
-        ORDER BY vote_number DESC"""
+        ORDER BY submission_time DESC
+        LIMIT 5"""
     cursor.execute(query)
     return cursor.fetchall()
 
