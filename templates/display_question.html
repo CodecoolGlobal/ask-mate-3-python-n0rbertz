@@ -19,6 +19,8 @@
     <ul class="question_comment_list">
         {% for comment in question_comments %}
         <li>{{ comment.submission_time|string() + " | " + comment.message }}</li>
+        <a href="/comment/{{ comment.id }}/delete">Delete comment</a>
+        <a href="/comment/{{ comment.id }}/edit">Edit comment</a>
         {% endfor %}
     </ul>
     {% for item in question %}
@@ -44,6 +46,7 @@
                 {% if comment.answer_id == answer.id %}
                 <td style="text-align: center; vertical-align: middle;">{{ comment.submission_time|string() }}</td>
                 <td style="text-align: center; vertical-align: middle;">{{ comment.message }}</td>
+                <td><a href="/comment/{{ comment.id }}/delete">Delete comment</a></td>
                 <td><a href="/comment/{{ comment.id }}/edit">Edit comment</a></td>
                 {% endif %}
         </tr>

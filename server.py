@@ -164,5 +164,13 @@ def edit_comment(comment_id):
         data_manager.edit_comment(new_message, comment_id, submission_time)
         return redirect('/')
     return render_template('edit_comment.html')
+
+
+@app.route('/comment/<comment_id>/delete')
+def delete_comment(comment_id):
+    data_manager.delete_comment_by_id(comment_id)
+    return redirect('/')
+
+
 if __name__ == "__main__":
     app.run(debug=True)

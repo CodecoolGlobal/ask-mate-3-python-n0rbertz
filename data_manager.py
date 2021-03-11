@@ -154,7 +154,7 @@ def edit_question(cursor: RealDictCursor, new_title, new_message, question_id,):
 
 @database_common.connection_handler
 def get_comments_by_question_id(cursor: RealDictCursor, question_id):
-    query="""SELECT submission_time, message, edited_count
+    query="""SELECT id, submission_time, message
     FROM comment
     WHERE question_id = %s"""
     cursor.execute(query, [int(question_id)])
@@ -228,3 +228,10 @@ def edit_comment(cursor: RealDictCursor, message, comment_id, new_submission_tim
     SET message = %s, submission_time = %s
     WHERE id = %s"""
     cursor.execute(query, [message, new_submission_time, comment_id])
+
+@database_common.connection_handler
+def delete_comment_by_id(cursor: RealDictCursor, comment_id):
+    query="""
+    DELETE FROM comment
+    WHERE id = %s"""
+    cursor.execute(query, [comment_id])
