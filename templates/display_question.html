@@ -21,6 +21,9 @@
         <li>{{ comment.submission_time|string() + " | " + comment.message }}</li>
         {% endfor %}
     </ul>
+    {% for item in question %}
+    <a href="/question/{{ item.id }}/new-comment">Add new comment</a><br>
+    {% endfor %}
     <hr>
     <h2>Answers:</h2>
     <table style="width:100%">

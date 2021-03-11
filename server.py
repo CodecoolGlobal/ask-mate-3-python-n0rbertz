@@ -107,6 +107,14 @@ def vote_down_answer(answer_id):
     return redirect('/')
 
 
+@app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
+def add_comment_to_question(question_id):
+    if request.method == 'POST':
+        message = request.form['message']
+        submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data_manager.add_comment_to_question(question_id, message, submission_time)
+        return redirect('/')
+    return render_template('add_comment_to_question.html')
 
 
 if __name__ == "__main__":

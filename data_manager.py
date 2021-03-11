@@ -157,3 +157,10 @@ def get_comments_by_question_id(cursor: RealDictCursor, question_id):
     WHERE question_id = %s"""
     cursor.execute(query, [int(question_id)])
     return cursor.fetchall()
+
+@database_common.connection_handler
+def add_comment_to_question(cursor: RealDictCursor, question_id, message, submission_time):
+    query="""INSERT INTO comment
+    (id, question_id, message, submission_time)
+    VALUES(DEFAULT, %s, %s, %s)"""
+    cursor.execute(query, [int(question_id), message, submission_time])
