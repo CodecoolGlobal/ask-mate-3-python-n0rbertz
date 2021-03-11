@@ -135,6 +135,10 @@ def add_question(cursor: RealDictCursor, submission_time, title, message, image)
     VALUES(DEFAULT, %s, 1, 0, %s, %s, %s)"""
     cursor.execute(query, [submission_time, title, message, image])
 
-
+@database_common.connection_handler
+def add_answer(cursor: RealDictCursor, submission_time, question_id, message, image):
+    query="""INSERT INTO answer
+    VALUES(DEFAULT, %s, 0, %s, %s, %s)"""
+    cursor.execute(query, [submission_time, int(question_id), message, image])
 
 

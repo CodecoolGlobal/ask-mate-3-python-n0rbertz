@@ -34,7 +34,7 @@
     <hr>
     <h3> Options:</h3>
         {% for item in question %}
-        <a href="/question/{{ question_id }}/new-answer">Add new answer</a><br>
+        <a href="/question/{{ item.id }}/new-answer">Add new answer</a><br>
         <a href="/question/{{ item.id }}/delete">Delete question</a><br>
         <a href="/question/{{ question_id }}/edit">Edit question</a><br>
         <a href="/">Home</a>

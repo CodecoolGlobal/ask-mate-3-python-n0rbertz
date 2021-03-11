@@ -68,10 +68,9 @@ def add_answer(question_id):
     if request.method == 'POST':
 
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        vote_number = 0
         message = request.form['message']
         image = "None"
-
+        data_manager.add_answer(submission_time, question_id, message, image)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('add_answer.html')
 
