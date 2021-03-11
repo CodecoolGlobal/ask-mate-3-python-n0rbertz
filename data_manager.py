@@ -10,7 +10,7 @@ def get_questions(cursor: RealDictCursor) -> list:
     query = """
         SELECT id, submission_time, view_number, vote_number, title, message, image
         FROM question
-        ORDER BY id"""
+        ORDER BY vote_number DESC"""
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -19,7 +19,8 @@ def get_question_by_id(cursor: RealDictCursor, question_id) -> list:
     query=""" 
         SELECT id, submission_time, view_number, vote_number, title, message, image
         FROM question
-        WHERE id = %s"""
+        WHERE id = %s
+        ORDER BY vote_number DESC"""
     cursor.execute(query, [question_id])
     return cursor.fetchall()
 
@@ -28,7 +29,8 @@ def get_answers_by_question_id(cursor: RealDictCursor, question_id) -> list:
     query=""" 
         SELECT id, submission_time, vote_number, question_id, message, image
         FROM answer
-        WHERE question_id = %s"""
+        WHERE question_id = %s
+        ORDER BY vote_number DESC"""
     cursor.execute(query, [question_id])
     return cursor.fetchall()
 
@@ -152,7 +154,7 @@ def edit_question(cursor: RealDictCursor, new_title, new_message, question_id,):
 
 @database_common.connection_handler
 def get_comments_by_question_id(cursor: RealDictCursor, question_id):
-    query="""SELECT submission_time, message
+    query="""SELECT submission_time, message, edited_count
     FROM comment
     WHERE question_id = %s"""
     cursor.execute(query, [int(question_id)])
@@ -169,7 +171,7 @@ def add_comment_to_question(cursor: RealDictCursor, question_id, message, submis
 def get_comments_by_answer_ids(cursor: RealDictCursor, answer_ids):
     placeholders = ', '.join(['%s'] * len(answer_ids))
     query = """
-        SELECT answer_id, submission_time, message
+        SELECT id, answer_id, submission_time, message, edited_count
         FROM comment
         WHERE answer_id IN ({})""".format(placeholders)
     cursor.execute(query, tuple(answer_ids))
@@ -210,3 +212,19 @@ def get_question_of_question_id_for_search(cursor: RealDictCursor, question_id):
     WHERE id IN ({})""".format(placeholders)
     cursor.execute(query, tuple(question_id))
     return cursor.fetchall()
+
+@database_common.connection_handler
+def edit_answer(cursor: RealDictCursor, message, answer_id):
+    query="""
+    UPDATE answer
+    SET message = %s
+    WHERE id = %s"""
+    cursor.execute(query, [message, answer_id])
+
+@database_common.connection_handler
+def edit_comment(cursor: RealDictCursor, message, comment_id, new_submission_time):
+    query="""
+    UPDATE comment
+    SET message = %s, submission_time = %s
+    WHERE id = %s"""
+    cursor.execute(query, [message, new_submission_time, comment_id])

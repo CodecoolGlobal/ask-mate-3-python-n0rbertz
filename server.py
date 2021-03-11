@@ -136,16 +136,33 @@ def add_comment_to_answer(answer_id):
 def search():
     if request.method == 'POST':
         search_phrase = request.form['search_phrase']
-        questions_of_search_phrase=data_manager.get_questions_by_search_phrase(search_phrase)
+        questions=data_manager.get_questions_by_search_phrase(search_phrase)
         question_ids_of_answers = data_manager.get_corresponding_question_id_of_answer_by_search_phrase(search_phrase)
         question_ids = []
         for question in question_ids_of_answers:
             question_ids.append(question['question_id'])
         if len(question_ids) > 0:
             questions_of_answers = data_manager.get_question_of_question_id_for_search(question_ids)
-        questions = questions_of_search_phrase + questions_of_answers
-
+            questions = questions + questions_of_answers
     return render_template('search_results.html', questions=questions)
 
+
+@app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    if request.method == 'POST':
+        new_message = request.form['message']
+        data_manager.edit_answer(new_message, answer_id)
+        return redirect('/')
+    return render_template('edit_answer.html')
+
+
+@app.route('/comment/<comment_id>/edit', methods=['GET', 'POST'])
+def edit_comment(comment_id):
+    if request.method == 'POST':
+        submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        new_message = request.form['message']
+        data_manager.edit_comment(new_message, comment_id, submission_time)
+        return redirect('/')
+    return render_template('edit_comment.html')
 if __name__ == "__main__":
     app.run(debug=True)
