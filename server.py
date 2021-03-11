@@ -26,10 +26,11 @@ def display_question(question_id):
     answers = data_manager.get_answers_by_question_id(question_id)
     question_comments = data_manager.get_comments_by_question_id(question_id)
     answer_ids = []
+    answer_comments = []
     for answer in answers:
         answer_ids.append(answer['id'])
-    answer_comments = data_manager.get_comments_by_answer_ids(answer_ids)
-    print(answer_comments)
+    if len(answer_ids) > 0:
+        answer_comments = data_manager.get_comments_by_answer_ids(answer_ids)
     return render_template('display_question.html', question=question, answers=answers, question_comments=question_comments, answer_comments=answer_comments)
 
 
@@ -129,6 +130,22 @@ def add_comment_to_answer(answer_id):
         data_manager.add_comment_to_answer(answer_id, message, submission_time)
         return redirect('/')
     return render_template('add_comment_to_answer.html')
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        search_phrase = request.form['search_phrase']
+        questions_of_search_phrase=data_manager.get_questions_by_search_phrase(search_phrase)
+        question_ids_of_answers = data_manager.get_corresponding_question_id_of_answer_by_search_phrase(search_phrase)
+        question_ids = []
+        for question in question_ids_of_answers:
+            question_ids.append(question['question_id'])
+        if len(question_ids) > 0:
+            questions_of_answers = data_manager.get_question_of_question_id_for_search(question_ids)
+        questions = questions_of_search_phrase + questions_of_answers
+
+    return render_template('search_results.html', questions=questions)
 
 if __name__ == "__main__":
     app.run(debug=True)

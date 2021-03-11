@@ -182,3 +182,31 @@ def add_comment_to_answer(cursor: RealDictCursor, answer_id, message, submission
     (id, answer_id, message, submission_time)
     VALUES(DEFAULT, %s, %s, %s)"""
     cursor.execute(query, [int(answer_id), message, submission_time])
+
+
+@database_common.connection_handler
+def get_questions_by_search_phrase(cursor: RealDictCursor, search_phrase):
+    query="""
+    SELECT id, submission_time, view_number, vote_number, title, message, image
+    FROM question
+    WHERE title LIKE %s or message LIKE %s"""
+    cursor.execute(query, ['%' + search_phrase + '%', '%' + search_phrase + '%'])
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_corresponding_question_id_of_answer_by_search_phrase(cursor: RealDictCursor, search_phrase):
+    query = """
+        SELECT question_id
+        FROM answer
+        WHERE message LIKE %s"""
+    cursor.execute(query, ['%' + search_phrase + '%'])
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_question_of_question_id_for_search(cursor: RealDictCursor, question_id):
+    placeholders = ', '.join(['%s'] * len(question_id))
+    query="""SELECT id, submission_time, view_number, vote_number, title, message, image
+    FROM question
+    WHERE id IN ({})""".format(placeholders)
+    cursor.execute(query, tuple(question_id))
+    return cursor.fetchall()
