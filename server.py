@@ -134,8 +134,9 @@ def add_comment_to_answer(answer_id):
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
-    if request.method == 'POST':
-        search_phrase = request.form['search_phrase']
+    if request.method == 'GET':
+        search_phrase = request.args.get('search_phrase')
+        print(search_phrase)
         questions=data_manager.get_questions_by_search_phrase(search_phrase)
         question_ids_of_answers = data_manager.get_corresponding_question_id_of_answer_by_search_phrase(search_phrase)
         question_ids = []
