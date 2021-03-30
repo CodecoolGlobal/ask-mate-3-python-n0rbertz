@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, session
 import data_manager
 from datetime import datetime
 from flask import Flask
@@ -27,6 +27,23 @@ def register():
         data_manager.add_user(email=email, hashed_password=hashed_password, submission_time=submission_time)
         return redirect('/')
     return render_template('register.html')
+
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form["email"]
+        user_validation = data_manager.check_if_user_exists(email)
+        if user_validation[0]['count'] == 1:
+            password = request.form["password"]
+            hashed_password = data_manager.get_hashed_password_by_email(email)
+            hashed_password = hashed_password[0]['hashed_password']
+            if password_hasher.verify_password(password, hashed_password=hashed_password):
+                session["email"] = email
+                #return redirect(url_for("list_question"))
+                return "hello " + session["email"]
+        else:
+            return "Invalid username or password"
+    return render_template('login.html')
 
 @app.route('/question/<question_id>')
 def display_question(question_id):

@@ -243,3 +243,19 @@ def add_user(cursor: RealDictCursor, email, hashed_password, submission_time):
     INSERT INTO "user"
     VALUES (DEFAULT, %s, %s, %s)"""
     cursor.execute(query, [email, hashed_password, submission_time])
+
+@database_common.connection_handler
+def check_if_user_exists(cursor: RealDictCursor, email):
+    query="""
+    SELECT COUNT(*) FROM "user" 
+    WHERE email = %s"""
+    cursor.execute(query, [email])
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_hashed_password_by_email(cursor: RealDictCursor, email):
+    query="""
+    SELECT hashed_password FROM "user"
+    WHERE email = %s"""
+    cursor.execute(query, [email])
+    return cursor.fetchall()
