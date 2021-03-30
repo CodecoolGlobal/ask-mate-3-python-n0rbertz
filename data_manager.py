@@ -236,3 +236,10 @@ def delete_comment_by_id(cursor: RealDictCursor, comment_id):
     DELETE FROM comment
     WHERE id = %s"""
     cursor.execute(query, [comment_id])
+
+@database_common.connection_handler
+def add_user(cursor: RealDictCursor, email, hashed_password, submission_time):
+    query = """
+    INSERT INTO "user"
+    VALUES (DEFAULT, %s, %s, %s)"""
+    cursor.execute(query, [email, hashed_password, submission_time])

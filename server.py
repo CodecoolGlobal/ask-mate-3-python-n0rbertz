@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, request, url_for
 import data_manager
 from datetime import datetime
 from flask import Flask
-
+import password_hasher
 
 app = Flask(__name__)
 
@@ -17,7 +17,16 @@ def list_questions():
     questions = data_manager.get_questions()
     return render_template('list.html', questions=questions)
 
-
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+        hashed_password = password_hasher.hash_password(password)
+        submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data_manager.add_user(email=email, hashed_password=hashed_password, submission_time=submission_time)
+        return redirect('/')
+    return render_template('register.html')
 
 @app.route('/question/<question_id>')
 def display_question(question_id):
