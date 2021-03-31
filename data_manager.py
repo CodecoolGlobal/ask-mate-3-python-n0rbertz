@@ -175,10 +175,10 @@ def get_answer_id_by_question_id(cursor: RealDictCursor, question_id):
 
 
 @database_common.connection_handler
-def add_answer(cursor: RealDictCursor, submission_time, question_id, message, image):
+def add_answer(cursor: RealDictCursor, submission_time, question_id, message, image, user_id):
     query = """INSERT INTO answer
-    VALUES(DEFAULT, %s, %s, %s, %s)"""
-    cursor.execute(query, [submission_time, int(question_id), message, image])
+    VALUES(DEFAULT, %s, %s, %s, %s, %s)"""
+    cursor.execute(query, [submission_time, int(question_id), message, image, user_id])
 
 
 @database_common.connection_handler

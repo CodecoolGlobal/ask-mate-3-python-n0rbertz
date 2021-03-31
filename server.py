@@ -102,6 +102,7 @@ def display_question(question_id):
 
     logged_in_user = util.user_logged_in()
 
+    
     question = data_manager.get_question_by_id(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
     question_comments = data_manager.get_comments_by_question_id(question_id)
@@ -164,7 +165,10 @@ def add_answer(question_id):
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         message = request.form['message']
         image = "None"
-        data_manager.add_answer(submission_time, question_id, message, image)
+        user = session["user_data"]
+        user_id = user["id"]
+        print(user_id)
+        data_manager.add_answer(submission_time, question_id, message, image, user_id)
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('add_answer.html', user=logged_in_user)
 
