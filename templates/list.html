@@ -7,13 +7,14 @@
 </head>
 <body>
     <caption><h2>Ask-Mate</h2></caption>
-    <form action="/search" method="GET">
+    <form action="/search" method="POST">
         <input type="text" name="search_phrase" value="Enter search phrase">
         <button type="submit">Search</button>
     </form>
+    {% if user == False %}
     <h2><a href="/login">Sign in</a></h2>
     <h2><a href="/register">Sign up</a></h2>
-    <pre class="user-data">{{ user }}</pre>
+    {% endif %}
     <hr>
     <table style="width:100%">
         {% for question in questions %}
@@ -25,11 +26,19 @@
             <td><a href="/question/{{ question.id }}">{{ question.title }}</a></td>
             <td>{{ question.message }}</td>
             <td>{{ question.image }}</td>
+            {% if user != False %}
             <td><a href="/question/{{ question.id }}/vote_up">Vote up</a></td>
             <td><a href="/question/{{ question.id }}/vote_down">Vote down</a></td>
+            {% endif %}
         </tr>
         {% endfor %}
     </table>
-    <h4><a href="/add-question">Add new question</a></h4>
+    {% if user != False %}
+        <div style="position: absolute; top: 0; right: 0; width: 300px; text-align:right;">
+            <p>{{ user["email"] }}</p><br>
+            <a href="/logout">Log out</a>
+        </div>
+        <h4><a href="/add-question">Add new question</a></h4>
+    {% endif %}
 </body>
 </html>

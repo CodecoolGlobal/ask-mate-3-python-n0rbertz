@@ -28,9 +28,8 @@ def search():
     logged_in_user = util.user_logged_in()
     questions = []
 
-    if request.method == 'GET':
-        search_phrase = request.args.get('search_phrase')
-        print(search_phrase)
+    if request.method == 'POST':
+        search_phrase = request.form["search_phrase"]
         questions = data_manager.get_questions_by_search_phrase(search_phrase)
         question_ids_of_answers = data_manager.get_corresponding_question_id_of_answer_by_search_phrase(search_phrase)
         question_ids = []
@@ -56,9 +55,8 @@ def login():
             if password_hasher.verify_password(password, hashed_password=hashed_password):
                 session["user_data"] = util.pretty_user_data(user_data)
 
-                # return redirect(url_for("list_question"))
+                return redirect(url_for("list_questions"))
 
-                return "hello " + session["email"]
         else:
             return "Invalid username or password"
     return render_template('login.html', user=False)
@@ -74,6 +72,12 @@ def register():
         data_manager.add_user(email=email, hashed_password=hashed_password, submission_time=submission_time)
         return redirect('/')
     return render_template('register.html', user=False)
+
+
+@app.route('/logout')
+def logout():
+    session.pop("user_data", None)
+    return redirect(url_for("list_questions"))
 
 
 # QUESTION MANAGEMENT
