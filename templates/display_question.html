@@ -24,7 +24,9 @@
         {% endfor %}
     </ul>
     {% for item in question %}
+    {% if user != False %}
     <a href="/question/{{ item.id }}/new-comment">Add new comment</a><br>
+    {% endif %}
     {% endfor %}
     <hr>
     <h2>Answers:</h2>
@@ -53,7 +55,9 @@
         </tr>
             {% endfor %}
                 <tr>
+                {% if user != False %}
                 <td style="text-align: center; vertical-align: middle;"><a href="/answer/{{ answer.id }}/new-comment">Add new comment</a></td>
+                {% endif %}
                 </tr>
         </tr>
         {% endfor %}
@@ -61,7 +65,9 @@
     <hr>
     <h3> Options:</h3>
         {% for item in question %}
+        {% if user != False %}
         <a href="/question/{{ item.id }}/new-answer">Add new answer</a><br>
+        {% endif %}
         <a href="/question/{{ item.id }}/delete">Delete question</a><br>
         <a href="/question/{{ item.id }}/edit">Edit question</a><br>
         <a href="/">Home</a>

@@ -492,3 +492,5 @@ def get_hashed_password_by_email(cursor: RealDictCursor, email):
     WHERE email = %s"""
     cursor.execute(query, [email])
     return cursor.fetchall()
+
+
