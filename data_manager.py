@@ -8,7 +8,7 @@ import database_common
 @database_common.connection_handler
 def get_questions(cursor: RealDictCursor) -> list:
     query = """
-        SELECT id, submission_time, view_number, vote_number, title, message, image
+        SELECT id, submission_time, view_number, title, message, image
         FROM question
         ORDER BY submission_time DESC
         LIMIT 5"""
@@ -245,9 +245,9 @@ def add_user(cursor: RealDictCursor, email, hashed_password, submission_time):
     cursor.execute(query, [email, hashed_password, submission_time])
 
 @database_common.connection_handler
-def check_if_user_exists(cursor: RealDictCursor, email):
+def get_user_data(cursor: RealDictCursor, email):
     query="""
-    SELECT COUNT(*) FROM "user" 
+    SELECT * FROM "user" 
     WHERE email = %s"""
     cursor.execute(query, [email])
     return cursor.fetchall()
