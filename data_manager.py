@@ -1,5 +1,6 @@
 from psycopg2.extras import RealDictCursor
 import database_common
+import util
 
 
 # QUESTIONS
@@ -8,10 +9,17 @@ def get_questions(cursor: RealDictCursor) -> list:
     query = """
         SELECT *
         FROM question
-        ORDER BY submission_time DESC
-        LIMIT 5"""
+        ORDER BY submission_time DESC"""
+    # todo: why tho?
+    # LIMIT 5"""
     cursor.execute(query)
-    return cursor.fetchall()
+
+    questions = cursor.fetchall().copy()
+
+    for question in questions:
+        question['vote_number'] = get_question_vote(int(question['id']))
+
+    return questions
 
 
 @database_common.connection_handler
@@ -24,6 +32,19 @@ def get_question_by_id(cursor: RealDictCursor, question_id) -> list:
     # ORDER BY vote_number DESC"""
     cursor.execute(query, [question_id])
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_author_id(cursor: RealDictCursor, question_id) -> int:
+    query = """
+        SELECT user_id
+        FROM question
+        WHERE id = %s"""
+    cursor.execute(query, [question_id])
+    ids = cursor.fetchall()
+    author_id = ids[0]['user_id']
+
+    return int(author_id) if author_id is not None else False
 
 
 @database_common.connection_handler
@@ -57,34 +78,57 @@ def get_question_of_question_id_for_search(cursor: RealDictCursor, question_id):
 
 
 @database_common.connection_handler
+def get_question_vote(cursor: RealDictCursor, question_id):
+    query = """
+        SELECT *
+        FROM vote
+        WHERE question_id = %s"""
+
+    cursor.execute(query, [question_id])
+
+    votes = cursor.fetchall()
+    vote_count = 0
+    for vote in votes:
+        vote_count += int(vote['value'])
+
+    return vote_count
+
+
+@database_common.connection_handler
 def add_question(cursor: RealDictCursor, submission_time, title, message, image):
+    user_data = util.user_logged_in()
+    if user_data is False:
+        return
+
     query = """INSERT INTO question
-    VALUES(DEFAULT, %s, 1, %s, %s, %s)"""
-    cursor.execute(query, [submission_time, title, message, image])
+    VALUES(DEFAULT, %s, 1, %s, %s, %s, %s)"""
+    cursor.execute(query, [submission_time, title, message, image, int(user_data['id'])])
 
 
 @database_common.connection_handler
-def vote_up_question(cursor: RealDictCursor, question_id):
+def vote_question(cursor: RealDictCursor, question_id, vote_value=1):
+    user_data = util.user_logged_in()
+    if user_data is False:
+        return
+
+    author_id = get_question_author_id(question_id)
+
+    if author_id is False:
+        return
+
     # todo: vote up
-    return
-
-    query = """ 
-        UPDATE question
-        SET vote_number = vote_number + 1
-        WHERE id = %s"""
-    cursor.execute(query, [question_id])
+    query = """INSERT INTO vote
+        (vote_id, user_id, question_id, value, author_id)
+        VALUES(DEFAULT, %s, %s, %s, %s)"""
+    cursor.execute(query, [user_data['id'], question_id, vote_value, author_id])
 
 
-@database_common.connection_handler
-def vote_down_question(cursor: RealDictCursor, question_id):
-    # todo: vote down
-    return
+def vote_up_question(question_id):
+    vote_question(question_id, 1)
 
-    query = """ 
-        UPDATE question
-        SET vote_number = vote_number - 1
-        WHERE id = %s"""
-    cursor.execute(query, [question_id])
+
+def vote_down_question(question_id):
+    vote_question(question_id, -1)
 
 
 @database_common.connection_handler
