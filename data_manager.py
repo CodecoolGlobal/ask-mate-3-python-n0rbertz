@@ -319,8 +319,9 @@ def delete_answer_by_question_id(cursor: RealDictCursor, question_id):
 # COMMENTS
 @database_common.connection_handler
 def get_comments_by_question_id(cursor: RealDictCursor, question_id):
-    query = """SELECT *
+    query = """SELECT comment.*, "user".email
     FROM comment
+    JOIN  "user" ON comment.user_id = "user".id
     WHERE question_id = %s"""
     cursor.execute(query, [int(question_id)])
     return cursor.fetchall()
@@ -330,9 +331,11 @@ def get_comments_by_question_id(cursor: RealDictCursor, question_id):
 def get_comments_by_answer_ids(cursor: RealDictCursor, answer_ids):
     placeholders = ', '.join(['%s'] * len(answer_ids))
     query = """
-        SELECT *
+        SELECT comment.*, "user".email
         FROM comment
-        WHERE answer_id IN ({})""".format(placeholders)
+        JOIN  "user" ON comment.user_id = "user".id
+        WHERE answer_id IN ({})
+        ORDER BY submission_time""".format(placeholders)
     cursor.execute(query, tuple(answer_ids))
     return cursor.fetchall()
 

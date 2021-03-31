@@ -215,6 +215,7 @@ def add_comment_to_question(question_id):
     if request.method == 'POST':
         message = request.form['message']
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
         data_manager.add_comment_to_question(question_id, message, submission_time)
         # todo: redirect back to the question
         return redirect('/')
