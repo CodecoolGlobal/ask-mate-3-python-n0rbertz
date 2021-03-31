@@ -427,6 +427,28 @@ def get_user_data(cursor: RealDictCursor, email):
 
 
 @database_common.connection_handler
+def get_user_reputation(cursor: RealDictCursor, user_id):
+    query = """
+        SELECT *
+        FROM vote
+        WHERE author_id = %s"""
+    cursor.execute(query, [user_id])
+    all_vote = cursor.fetchall()
+
+    reputation = 0
+
+    for vote in all_vote:
+        vote_dir = int(vote['value'])
+
+        if vote['question_id'] is not None:
+            reputation += 5 if vote_dir == 1 else -2
+        elif vote['answer_id'] is not None:
+            reputation += 10 if vote_dir == 1 else -2
+
+    return reputation
+
+
+@database_common.connection_handler
 def get_hashed_password_by_email(cursor: RealDictCursor, email):
     query = """
     SELECT hashed_password FROM "user"
