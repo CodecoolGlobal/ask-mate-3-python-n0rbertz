@@ -240,8 +240,9 @@ def additional_answer_data(answer_data):
 @database_common.connection_handler
 def get_answers_by_question_id(cursor: RealDictCursor, question_id) -> list:
     query = """ 
-        SELECT *
+        SELECT answer.*, "user".email
         FROM answer
+        JOIN "user" ON answer.user_id = "user".id
         WHERE question_id = %s"""
     # todo: ordering with joins
     # ORDER BY vote_number DESC"""
