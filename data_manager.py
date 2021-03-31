@@ -199,8 +199,10 @@ def add_question(cursor: RealDictCursor, submission_time, title, message, image)
         return
 
     query = """INSERT INTO question
-    VALUES(DEFAULT, %s, 1, %s, %s, %s, %s)"""
+    VALUES(DEFAULT, %s, 1, %s, %s, %s, %s)
+    RETURNING id"""
     cursor.execute(query, [submission_time, title, message, image, int(user_data['id'])])
+    return int(cursor.fetchone()['id'])
 
 
 def vote_up_question(question_id):
@@ -272,6 +274,21 @@ def get_answer_id_by_question_id(cursor: RealDictCursor, question_id):
 
 
 @database_common.connection_handler
+def get_question_id_by_answer_id(cursor: RealDictCursor, answer_id):
+    query = """
+            SELECT question_id
+            FROM answer
+            WHERE id = %s
+            LIMIT 1"""
+    cursor.execute(query, [int(answer_id)])
+    question_ids = cursor.fetchall()
+    if len(question_ids) != 1:
+        return False
+
+    return int(question_ids[0]['question_id'])
+
+
+@database_common.connection_handler
 def add_answer(cursor: RealDictCursor, submission_time, question_id, message, image):
     user_data = util.user_logged_in()
 
@@ -279,8 +296,10 @@ def add_answer(cursor: RealDictCursor, submission_time, question_id, message, im
         return
 
     query = """INSERT INTO answer
-    VALUES(DEFAULT, %s, %s, %s, %s, %s)"""
+    VALUES(DEFAULT, %s, %s, %s, %s, %s)
+    RETURNING id"""
     cursor.execute(query, [submission_time, int(question_id), message, image, user_data['id']])
+    return int(cursor.fetchone()['id'])
 
 
 def vote_up_answer(answer_id):
@@ -325,6 +344,24 @@ def get_comments_by_question_id(cursor: RealDictCursor, question_id):
     WHERE question_id = %s"""
     cursor.execute(query, [int(question_id)])
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_id_by_comment_id(cursor: RealDictCursor, comment_id):
+    query = """
+        SELECT question_id, answer_id
+        FROM comment
+        WHERE id = %s"""
+    cursor.execute(query, [comment_id])
+    comment_ids = cursor.fetchall()
+
+    if len(comment_ids) != 1:
+        return False
+
+    if comment_ids[0]['question_id'] is not None:
+        return int(comment_ids[0]['question_id'])
+
+    return get_question_id_by_answer_id(int(comment_ids[0]['answer_id']))
 
 
 @database_common.connection_handler
