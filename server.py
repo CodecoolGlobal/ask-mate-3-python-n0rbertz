@@ -26,11 +26,12 @@ def list_questions():
 def search():
 
     logged_in_user = util.user_logged_in()
+    questions = []
 
     if request.method == 'GET':
         search_phrase = request.args.get('search_phrase')
         print(search_phrase)
-        questions=data_manager.get_questions_by_search_phrase(search_phrase)
+        questions = data_manager.get_questions_by_search_phrase(search_phrase)
         question_ids_of_answers = data_manager.get_corresponding_question_id_of_answer_by_search_phrase(search_phrase)
         question_ids = []
         for question in question_ids_of_answers:
@@ -87,6 +88,7 @@ def add_question():
         new_message = request.form["message"]
         image = "None"
         data_manager.add_question(submission_time, new_title, new_message, image)
+        # todo: redirect back to the question
         return redirect('/')
     return render_template('add-question.html', user=logged_in_user)
 
@@ -111,12 +113,14 @@ def display_question(question_id):
 @app.route('/question/<question_id>/vote_up')
 def vote_up_question(question_id):
     data_manager.vote_up_question(question_id)
+    # todo: redirect back to the question
     return redirect('/')
 
 
 @app.route('/question/<question_id>/vote_down')
 def vote_down_question(question_id):
     data_manager.vote_down_question(question_id)
+    # todo: redirect back to the question
     return redirect('/')
 
 
@@ -129,6 +133,7 @@ def edit_question(question_id):
         new_title = request.form['title']
         new_message = request.form['message']
         data_manager.edit_question(new_title, new_message, question_id)
+        # todo: redirect back to the question
         return redirect('/')
     return render_template('edit_question.html', user=logged_in_user)
 
@@ -163,12 +168,14 @@ def add_answer(question_id):
 @app.route('/answer/<answer_id>/vote_up')
 def vote_up_answer(answer_id):
     data_manager.vote_up_answer(answer_id)
-    return redirect ('/')
+    # todo: redirect back to the question
+    return redirect('/')
 
 
 @app.route('/answer/<answer_id>/vote_down')
 def vote_down_answer(answer_id):
     data_manager.vote_down_answer(answer_id)
+    # todo: redirect back to the question
     return redirect('/')
 
 
@@ -180,6 +187,7 @@ def edit_answer(answer_id):
     if request.method == 'POST':
         new_message = request.form['message']
         data_manager.edit_answer(new_message, answer_id)
+        # todo: redirect back to the question
         return redirect('/')
     return render_template('edit_answer.html', user=logged_in_user)
 
@@ -188,6 +196,7 @@ def edit_answer(answer_id):
 def delete_answer(answer_id):
     data_manager.delete_comments_by_answer_id(answer_id)
     data_manager.delete_answer_by_answer_id(answer_id)
+    # todo: redirect back to the question
     return redirect('/')
 
 
@@ -201,6 +210,7 @@ def add_comment_to_question(question_id):
         message = request.form['message']
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         data_manager.add_comment_to_question(question_id, message, submission_time)
+        # todo: redirect back to the question
         return redirect('/')
     return render_template('add_comment_to_question.html', user=logged_in_user)
 
@@ -214,6 +224,7 @@ def add_comment_to_answer(answer_id):
         message = request.form['message']
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         data_manager.add_comment_to_answer(answer_id, message, submission_time)
+        # todo: redirect back to the question
         return redirect('/')
     return render_template('add_comment_to_answer.html', user=logged_in_user)
 
@@ -227,6 +238,7 @@ def edit_comment(comment_id):
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         new_message = request.form['message']
         data_manager.edit_comment(new_message, comment_id, submission_time)
+        # todo: redirect back to the question
         return redirect('/')
     return render_template('edit_comment.html', user=logged_in_user)
 
@@ -234,6 +246,7 @@ def edit_comment(comment_id):
 @app.route('/comment/<comment_id>/delete')
 def delete_comment(comment_id):
     data_manager.delete_comment_by_id(comment_id)
+    # todo: redirect back to the question
     return redirect('/')
 
 
