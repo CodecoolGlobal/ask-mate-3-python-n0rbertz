@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Askmate</title>
+
+</head>
+<body>
+    <table style="width:100%">
+        {% for user in users %}
+        <tr>
+            <td>{{ user.email }}</td>
+            <td>{{ user.submission_time }}</td>
+            <td>{{ user.question_count }}</td>
+            <td>{{ user.answer_count }}</td>
+            <td>{{ user.comment_count }}</td>
+            <td>{{ user.reputation }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

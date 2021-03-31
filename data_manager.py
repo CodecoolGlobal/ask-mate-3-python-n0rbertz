@@ -457,3 +457,23 @@ def get_hashed_password_by_email(cursor: RealDictCursor, email):
     return cursor.fetchall()
 
 
+@database_common.connection_handler
+def get_user_data_and_counts(cursor: RealDictCursor):
+    query="""
+    SELECT "user".id, "user".email, "user".submission_time, COUNT(question.user_id) AS question_count,
+       COUNT(answer.user_id) AS answer_count, COUNT(comment.user_id) AS comment_count
+    FROM "user"
+    LEFT JOIN question ON "user".id = question.user_id
+    LEFT JOIN answer ON "user".id = answer.user_id
+    LEFT JOIN comment ON "user".id = comment.user_id
+    GROUP BY "user".id, "user".email, "user".submission_time;"""
+    cursor.execute(query)
+    user_data = cursor.fetchall().copy()
+    for user_index in range(len(user_data)):
+        user_data[user_index] = additional_user_data(user_data[user_index])
+    return user_data
+
+def additional_user_data(user_data):
+    user = user_data.copy()
+    user["reputation"] = get_user_reputation(user["id"])
+    return user

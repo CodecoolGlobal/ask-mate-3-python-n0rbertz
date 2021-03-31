@@ -44,6 +44,11 @@ def search():
             questions = questions + questions_of_answers
     return render_template('search_results.html', user=logged_in_user, questions=questions)
 
+@app.route('/users')
+def list_users():
+    logged_in_user = util.user_logged_in()
+    user_data_and_counts = data_manager.get_user_data_and_counts()
+    return render_template('users.html', users=user_data_and_counts)
 
 # USER MANAGEMENT
 @app.route('/login', methods=["GET", "POST"])
