@@ -18,6 +18,10 @@ def list_questions():
 
     logged_in_user = util.user_logged_in()
 
+    # todo: actual user data and additional shit
+    # if logged_in_user is not False:
+    #     print('reputation: ', data_manager.get_user_reputation(logged_in_user['id']))
+
     questions = data_manager.get_questions()
     return render_template('list.html', user=logged_in_user, questions=questions)
 
