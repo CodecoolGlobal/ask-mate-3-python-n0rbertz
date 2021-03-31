@@ -100,9 +100,11 @@ def add_question():
         new_title = request.form["title"]
         new_message = request.form["message"]
         image = "None"
-        data_manager.add_question(submission_time, new_title, new_message, image)
-        # todo: redirect back to the question
-        return redirect('/')
+
+        new_question_id = data_manager.add_question(submission_time, new_title, new_message, image)
+
+        return redirect('/question/' + str(new_question_id))
+
     return render_template('add-question.html', user=logged_in_user)
 
 
@@ -111,7 +113,6 @@ def display_question(question_id):
 
     logged_in_user = util.user_logged_in()
 
-    
     question = data_manager.get_question_by_id(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
     question_comments = data_manager.get_comments_by_question_id(question_id)
@@ -127,14 +128,12 @@ def display_question(question_id):
 @app.route('/question/<question_id>/vote_up')
 def vote_up_question(question_id):
     data_manager.vote_up_question(question_id)
-    # todo: redirect back to the question
     return redirect('/')
 
 
 @app.route('/question/<question_id>/vote_down')
 def vote_down_question(question_id):
     data_manager.vote_down_question(question_id)
-    # todo: redirect back to the question
     return redirect('/')
 
 
@@ -147,8 +146,9 @@ def edit_question(question_id):
         new_title = request.form['title']
         new_message = request.form['message']
         data_manager.edit_question(new_title, new_message, question_id)
-        # todo: redirect back to the question
-        return redirect('/')
+
+        return redirect('/question/' + str(question_id))
+
     return render_template('edit_question.html', user=logged_in_user)
 
 
@@ -183,15 +183,15 @@ def add_answer(question_id):
 @app.route('/answer/<answer_id>/vote_up')
 def vote_up_answer(answer_id):
     data_manager.vote_up_answer(answer_id)
-    # todo: redirect back to the question
-    return redirect('/')
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    return redirect('/question/' + str(question_id))
 
 
 @app.route('/answer/<answer_id>/vote_down')
 def vote_down_answer(answer_id):
     data_manager.vote_down_answer(answer_id)
-    # todo: redirect back to the question
-    return redirect('/')
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    return redirect('/question/' + str(question_id))
 
 
 @app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
@@ -202,8 +202,8 @@ def edit_answer(answer_id):
     if request.method == 'POST':
         new_message = request.form['message']
         data_manager.edit_answer(new_message, answer_id)
-        # todo: redirect back to the question
-        return redirect('/')
+        question_id = data_manager.get_question_id_by_answer_id(answer_id)
+        return redirect('/question/' + str(question_id))
     return render_template('edit_answer.html', user=logged_in_user)
 
 
@@ -211,8 +211,8 @@ def edit_answer(answer_id):
 def delete_answer(answer_id):
     data_manager.delete_comments_by_answer_id(answer_id)
     data_manager.delete_answer_by_answer_id(answer_id)
-    # todo: redirect back to the question
-    return redirect('/')
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    return redirect('/question/' + str(question_id))
 
 
 # COMMENT MANAGEMENT
@@ -226,8 +226,9 @@ def add_comment_to_question(question_id):
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         data_manager.add_comment_to_question(question_id, message, submission_time)
-        # todo: redirect back to the question
-        return redirect('/')
+
+        return redirect('/question/' + str(question_id))
+
     return render_template('add_comment_to_question.html', user=logged_in_user)
 
 
@@ -240,8 +241,8 @@ def add_comment_to_answer(answer_id):
         message = request.form['message']
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         data_manager.add_comment_to_answer(answer_id, message, submission_time)
-        # todo: redirect back to the question
-        return redirect('/')
+        question_id = data_manager.get_question_id_by_answer_id(answer_id)
+        return redirect('/question/' + str(question_id))
     return render_template('add_comment_to_answer.html', user=logged_in_user)
 
 
@@ -254,16 +255,16 @@ def edit_comment(comment_id):
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         new_message = request.form['message']
         data_manager.edit_comment(new_message, comment_id, submission_time)
-        # todo: redirect back to the question
-        return redirect('/')
+        question_id = data_manager.get_question_id_by_comment_id(comment_id)
+        return redirect('/question/' + str(question_id))
     return render_template('edit_comment.html', user=logged_in_user)
 
 
 @app.route('/comment/<comment_id>/delete')
 def delete_comment(comment_id):
+    question_id = data_manager.get_question_id_by_comment_id(comment_id)
     data_manager.delete_comment_by_id(comment_id)
-    # todo: redirect back to the question
-    return redirect('/')
+    return redirect('/question/' + str(question_id))
 
 
 if __name__ == "__main__":
