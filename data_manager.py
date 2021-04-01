@@ -289,6 +289,16 @@ def get_question_id_by_answer_id(cursor: RealDictCursor, answer_id):
 
 
 @database_common.connection_handler
+def get_answer_by_id(cursor: RealDictCursor, answer_id):
+    query = """
+        SELECT *
+        FROM answer
+        WHERE id = %s"""
+    cursor.execute(query, [answer_id])
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def add_answer(cursor: RealDictCursor, submission_time, question_id, message, image):
     user_data = util.user_logged_in()
 
@@ -378,6 +388,16 @@ def get_comments_by_answer_ids(cursor: RealDictCursor, answer_ids):
 
 
 @database_common.connection_handler
+def get_comment_by_id(cursor: RealDictCursor, comment_id):
+    query = """
+        SELECT *
+        FROM comment
+        WHERE id = %s"""
+    cursor.execute(query, [comment_id])
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def add_comment_to_question(cursor: RealDictCursor, question_id, message, submission_time):
     user_data = util.user_logged_in()
     if user_data is False:
@@ -455,7 +475,7 @@ def add_user(cursor: RealDictCursor, email, hashed_password, submission_time):
 
 
 @database_common.connection_handler
-def get_user_data(cursor: RealDictCursor, email):
+def get_user_login_data(cursor: RealDictCursor, email):
     query = """
     SELECT * FROM "user" 
     WHERE email = %s"""
@@ -495,7 +515,7 @@ def get_hashed_password_by_email(cursor: RealDictCursor, email):
 
 
 @database_common.connection_handler
-def get_user_data_and_counts(cursor: RealDictCursor):
+def get_users_data(cursor: RealDictCursor):
     query="""
     SELECT "user".id, "user".email, "user".submission_time, COUNT(question.user_id) AS question_count,
        COUNT(answer.user_id) AS answer_count, COUNT(comment.user_id) AS comment_count
@@ -509,6 +529,27 @@ def get_user_data_and_counts(cursor: RealDictCursor):
     for user_index in range(len(user_data)):
         user_data[user_index] = additional_user_data(user_data[user_index])
     return user_data
+
+
+@database_common.connection_handler
+def get_user_data(cursor: RealDictCursor, user_id):
+    query = """
+        SELECT "user".id, "user".email, "user".submission_time, COUNT(question.user_id) AS question_count,
+        COUNT(answer.user_id) AS answer_count, COUNT(comment.user_id) AS comment_count
+        FROM "user"
+        LEFT JOIN question ON "user".id = question.user_id
+        LEFT JOIN answer ON "user".id = answer.user_id
+        LEFT JOIN comment ON "user".id = comment.user_id
+        WHERE "user".id = %s
+        GROUP BY "user".id, "user".email, "user".submission_time;"""
+    cursor.execute(query, [user_id])
+    user_data = cursor.fetchall()
+    if len(user_data) != 1:
+        return False
+
+    user = additional_user_data(user_data[0].copy())
+    return user
+
 
 def additional_user_data(user_data):
     user = user_data.copy()

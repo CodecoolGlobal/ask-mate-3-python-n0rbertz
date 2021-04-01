@@ -1,76 +1,68 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    {% for item in question %}
-    <title>Question {{ item.id }}</title>
-    {% endfor %}
-
-</head>
-<body>
-    {% for item in question %}
-    <h2>Title</h2>
-        <p>{{ item.title }}</p>
-    <h3>Message</h3>
-        <p>{{ item.message }}</p>
-    {% endfor %}
-    <hr>
-    <h4>Comments</h4>
-    <ul class="question_comment_list">
-        {% for comment in question_comments %}
-        <li>{{ comment.email + " | " + comment.submission_time|string() + " | " + comment.message }}</li>
-        <a href="/comment/{{ comment.id }}/delete">Delete comment</a>
-        <a href="/comment/{{ comment.id }}/edit">Edit comment</a>
-        {% endfor %}
-    </ul>
+{% extends "template_client.html" %}
+{% block title %}Home{% endblock %}
+{% block headerbutton %}
     {% for item in question %}
     {% if user != False %}
-    <a href="/question/{{ item.id }}/new-comment">Add new comment</a><br>
-    {% endif %}
-    {% endfor %}
-    <hr>
-    <h2>Answers:</h2>
-    <table style="width:100%">
-        {% for answer in answers %}
-        <tr>
-                <td><strong>{{ answer.email }}</strong></td>
-                <td><strong>{{ answer.submission_time }}</strong></td>
-                <td><strong>{{ answer.vote_number }}</strong></td>
-                <td><strong>{{ answer.message }}</strong></td>
-                <td>{{ answer.image }}</td>
-                <td><a href="/answer/{{ answer.id }}/delete">Delete answer</a></td>
-                <td><a href="/answer/{{ answer.id }}/edit">Edit answer</a></td>
-                <td><a href="/answer/{{ answer.id }}/vote_up">Vote up</a></td>
-                <td><a href="/answer/{{ answer.id }}/vote_down">Vote down</a></td>
-        </tr>
-        <tr>
-            {% for comment in answer_comments %}
-                {% if comment.answer_id == answer.id %}
-                <td style="text-align: center; vertical-align: middle;">{{ comment.email }}</td>
-                <td style="text-align: center; vertical-align: middle;">{{ comment.submission_time|string() }}</td>
-                <td style="text-align: center; vertical-align: middle;">{{ comment.message }}</td>
-                <td><a href="/comment/{{ comment.id }}/delete">Delete comment</a></td>
-                <td><a href="/comment/{{ comment.id }}/edit">Edit comment</a></td>
-                {% endif %}
-        </tr>
-            {% endfor %}
-                <tr>
-                {% if user != False %}
-                <td style="text-align: center; vertical-align: middle;"><a href="/answer/{{ answer.id }}/new-comment">Add new comment</a></td>
-                {% endif %}
-                </tr>
-        </tr>
-        {% endfor %}
-    </table>
-    <hr>
-    <h3> Options:</h3>
-        {% for item in question %}
-        {% if user != False %}
-        <a href="/question/{{ item.id }}/new-answer">Add new answer</a><br>
-        {% endif %}
         <a href="/question/{{ item.id }}/delete">Delete question</a><br>
         <a href="/question/{{ item.id }}/edit">Edit question</a><br>
-        <a href="/">Home</a>
+    {% endif %}
+    {% endfor %}
+    <a href="/">Home</a>
+{% endblock %}
+{% block wrappercontent %}
+{% for item in question %}
+<h2>Title</h2>
+    <p>{{ item.title }}</p>
+<h3>Message</h3>
+    <p>{{ item.message }}</p>
+{% endfor %}
+<hr>
+<h4>Comments</h4>
+<ul class="question_comment_list">
+    {% for comment in question_comments %}
+    <li>{{ comment.email + " | " + comment.submission_time|string() + " | " + comment.message }}</li>
+    <a href="/comment/{{ comment.id }}/delete">Delete comment</a>
+    <a href="/comment/{{ comment.id }}/edit">Edit comment</a>
+    {% endfor %}
+</ul>
+{% for item in question %}
+{% if user != False %}
+    <a href="/question/{{ item.id }}/new-comment">Add new comment</a><br>
+{% endif %}
+<hr>
+<h2>Answers:</h2>
+<a href="/question/{{ item.id }}/new-answer">Add new answer</a><br>
+{% endfor %}
+<table style="width:100%">
+    {% for answer in answers %}
+    <tr>
+            <td><strong>{{ answer.email }}</strong></td>
+            <td><strong>{{ answer.submission_time }}</strong></td>
+            <td><strong>{{ answer.vote_number }}</strong></td>
+            <td><strong>{{ answer.message }}</strong></td>
+            <td>{{ answer.image }}</td>
+            <td><a href="/answer/{{ answer.id }}/delete">Delete answer</a></td>
+            <td><a href="/answer/{{ answer.id }}/edit">Edit answer</a></td>
+            <td><a href="/answer/{{ answer.id }}/vote_up">Vote up</a></td>
+            <td><a href="/answer/{{ answer.id }}/vote_down">Vote down</a></td>
+    </tr>
+    <tr>
+        {% for comment in answer_comments %}
+            {% if comment.answer_id == answer.id %}
+            <td style="text-align: center; vertical-align: middle;">{{ comment.email }}</td>
+            <td style="text-align: center; vertical-align: middle;">{{ comment.submission_time|string() }}</td>
+            <td style="text-align: center; vertical-align: middle;">{{ comment.message }}</td>
+            <td><a href="/comment/{{ comment.id }}/delete">Delete comment</a></td>
+            <td><a href="/comment/{{ comment.id }}/edit">Edit comment</a></td>
+            {% endif %}
+    </tr>
         {% endfor %}
-</body>
-</html>
+            <tr>
+            {% if user != False %}
+            <td style="text-align: center; vertical-align: middle;"><a href="/answer/{{ answer.id }}/new-comment">Add new comment</a></td>
+            {% endif %}
+            </tr>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "template_client.html" %}
+{% block title %}Users{% endblock %}
+{% block headerbutton %}
+    <a href="/users">Back to list</a>
+    <a href="/">Back to home</a>
+{% endblock %}
+{% block wrappercontent %}
+<table>
+    <tr>
+        <td>{{ display_user.email }}</td>
+        <td>{{ display_user.submission_time }}</td>
+        <td>{{ display_user.question_count }}</td>
+        <td>{{ display_user.answer_count }}</td>
+        <td>{{ display_user.comment_count }}</td>
+        <td>{{ display_user.reputation }}</td>
+    </tr>
+</table>
+{% endblock %}

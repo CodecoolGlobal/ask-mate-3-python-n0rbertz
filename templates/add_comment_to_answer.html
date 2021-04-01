@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-</head>
-<body>
-    <form action="" method="POST">
-        <div>
-            <label>
-                Message
-                <input name="message">
-            </label>
-        </div>
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html>
+{% extends "template_client.html" %}
+{% block title %}New comment{% endblock %}
+{% block headerbutton %}
+    <a href="/question/{{ question_id }}">Cancel</a>
+{% endblock %}
+{% block wrappercontent %}
+<form action="" method="POST">
+    <div>
+        <label>Message</label>
+        <textarea name="message"></textarea>
+    </div>
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}

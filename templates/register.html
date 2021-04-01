@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Signup page</title>
-</head>
-<body>
-    <form action="" method="POST">
-        <label for="email">Email</label>
-        <input name="email"><br>
-        <label for="password">Password</label>
-        <input name="password">
-        <button type="submit">Sign up</button>
-    </form>
-</body>
-</html>
+{% extends "template_raw.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<form action="" method="POST">
+    <label for="email">Email</label>
+    <input name="email"><br>
+    <label for="password">Password</label>
+    <input name="password">
+    <button type="submit">Sign up</button>
+</form>
+{% endblock %}

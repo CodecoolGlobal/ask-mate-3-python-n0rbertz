@@ -1,22 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Askmate</title>
-
-</head>
-<body>
-    <table style="width:100%">
-        {% for user in users %}
-        <tr>
-            <td>{{ user.email }}</td>
-            <td>{{ user.submission_time }}</td>
-            <td>{{ user.question_count }}</td>
-            <td>{{ user.answer_count }}</td>
-            <td>{{ user.comment_count }}</td>
-            <td>{{ user.reputation }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>
+{% extends "template_client.html" %}
+{% block title %}Users{% endblock %}
+{% block headerbutton %}
+    {% if user != False %}
+    <a href="/user/{{ user.id }}">My profile</a>
+    {% endif %}
+    <a href="/">Back to home</a>
+{% endblock %}
+{% block wrappercontent %}
+<table style="width:100%">
+    {% for _user in users %}
+    <tr>
+        <td><a href="/user/{{ _user.id }}">{{ _user.email }}</a></td>
+        <td>{{ _user.submission_time }}</td>
+        <td>{{ _user.question_count }}</td>
+        <td>{{ _user.answer_count }}</td>
+        <td>{{ _user.comment_count }}</td>
+        <td>{{ _user.reputation }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

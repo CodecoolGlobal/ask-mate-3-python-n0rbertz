@@ -1,23 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-</head>
-<body>
-    <form action="" method="POST">
-        <div>
-            <label>
-                Title
-                <input name="title">
-            </label>
-        </div>
-        <div>
-            <label>
-                Message
-                <input name="message">
-            </label>
-        </div>
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html>
+{% extends "template_client.html" %}
+{% block title %}New question{% endblock %}
+{% block headerbutton %}
+    <a href="/">Cancel</a>
+{% endblock %}
+{% block wrappercontent %}
+<form action="" method="POST">
+    <div>
+        <label>Title</label>
+        <input name="title">
+    </div>
+    <div>
+        <label>Question</label>
+        <textarea name="message"></textarea>
+    </div>
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}

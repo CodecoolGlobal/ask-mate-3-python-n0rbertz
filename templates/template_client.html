@@ -1,0 +1,25 @@
+{% extends "template_raw.html" %}
+{% block content %}
+<div id="wrapper">
+    <header>
+        <h3 id="site-name">Askmate<i>3</i></h3>
+        <form id="search-form" action="/search" method="POST">
+            <input type="text" name="search_phrase" placeholder="Enter search phrase">
+            <button type="submit">Search</button>
+        </form>
+        <div id="user-options">
+            {% if user == False %}
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            {% else %}
+            <a href="/user/{{ user.id }}">{{ user.email }}</a>
+            <a href="/logout">Log out</a>
+            {% endif %}
+        </div>
+        <div id="right-buttons">
+            {% block headerbutton %}{% endblock %}
+        </div>
+    </header>
+    <div id="content">{% block wrappercontent %}{% endblock %}</div>
+</div>
+{% endblock %}

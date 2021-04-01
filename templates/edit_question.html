@@ -1,23 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-</head>
-<body>
-    <form action="" method="POST">
-        <div>
-            <label>
-                Title
-                <input name="title">
-            </label>
-        </div>
-        <div>
-            <label>
-                Message
-                <input name="message">
-            </label>
-        </div>
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html>
+{% extends "template_client.html" %}
+{% block title %}Edit question{% endblock %}
+{% block headerbutton %}
+    <a href="/question/{{ question_id }}">Cancel</a>
+{% endblock %}
+{% block wrappercontent %}
+<form action="" method="POST">
+    {% for question in question_data %}
+    <div>
+        <label>Title</label>
+         <input name="title" value="{{ question.title }}">
+    </div>
+    <div>
+        <label>Message</label>
+        <textarea name="message">{{ question.message }}"</textarea>
+    </div>
+    {% endfor %}
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}

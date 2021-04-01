@@ -1,32 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Askmate</title>
-
-</head>
-<body>
-    <caption><h2>Ask-Mate</h2></caption>
-    <form action="/search" method="POST">
-        <input type="text" name="search_phrase" value="Enter search phrase">
-        <button type="submit">Search</button>
-    </form>
-    <hr>
-    <table style="width:100%">
-        {% for question in questions %}
-        <tr>
-            <td>{{ question.id }}</td>
-            <td>{{ question.submission_time }}</td>
-            <td>{{ question.view_number }}</td>
-            <td>{{ question.vote_number }}</td>
-            <td><a href="/question/{{ question.id }}">{{ question.title }}</a></td>
-            <td>{{ question.message }}</td>
-            <td>{{ question.image }}</td>
-            <td><a href="/question/{{ question.id }}/vote_up">Vote up</a></td>
-            <td><a href="/question/{{ question.id }}/vote_down">Vote down</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-    <h4><a href="/add-question">Add new question</a></h4>
-</body>
-</html>
+{% extends "template_client.html" %}
+{% block title %}Search results{% endblock %}
+{% block headerbutton %}
+    <a href="/">Back to home</a>
+{% endblock %}
+{% block wrappercontent %}
+<table style="width:100%">
+    {% for question in questions %}
+    <tr>
+        <td>{{ question.id }}</td>
+        <td>{{ question.submission_time }}</td>
+        <td>{{ question.view_number }}</td>
+        <td>{{ question.vote_number }}</td>
+        <td><a href="/question/{{ question.id }}">{{ question.title }}</a></td>
+        <td>{{ question.message }}</td>
+        <td>{{ question.image }}</td>
+        <td><a href="/question/{{ question.id }}/vote_up">Vote up</a></td>
+        <td><a href="/question/{{ question.id }}/vote_down">Vote down</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

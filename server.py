@@ -44,18 +44,13 @@ def search():
             questions = questions + questions_of_answers
     return render_template('search_results.html', user=logged_in_user, questions=questions)
 
-@app.route('/users')
-def list_users():
-    logged_in_user = util.user_logged_in()
-    user_data_and_counts = data_manager.get_user_data_and_counts()
-    return render_template('users.html', users=user_data_and_counts)
 
 # USER MANAGEMENT
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         email = request.form["email"]
-        user_data = data_manager.get_user_data(email)
+        user_data = data_manager.get_user_login_data(email)
 
         if len(user_data) == 1:
             password = request.form["password"]
@@ -69,6 +64,22 @@ def login():
         else:
             return "Invalid username or password"
     return render_template('login.html', user=False)
+
+
+@app.route('/users')
+def list_users():
+    logged_in_user = util.user_logged_in()
+    users_data = data_manager.get_users_data()
+    return render_template('users.html', user=logged_in_user, users=users_data)
+
+
+@app.route('/user/<user_id>')
+def display_user(user_id):
+    logged_in_user = util.user_logged_in()
+    user_data = data_manager.get_user_data(user_id)
+    if user_data is False:
+        redirect('/users')
+    return render_template('user.html', user=logged_in_user, display_user=user_data)
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -140,6 +151,7 @@ def vote_down_question(question_id):
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
 
+    question_data = data_manager.get_question_by_id(question_id)
     logged_in_user = util.user_logged_in()
 
     if request.method == 'POST':
@@ -149,7 +161,7 @@ def edit_question(question_id):
 
         return redirect('/question/' + str(question_id))
 
-    return render_template('edit_question.html', user=logged_in_user)
+    return render_template('edit_question.html', user=logged_in_user, question_id=question_id, question_data=question_data)
 
 
 @app.route('/question/<question_id>/delete')
@@ -177,7 +189,7 @@ def add_answer(question_id):
 
         data_manager.add_answer(submission_time, question_id, message, image)
         return redirect(url_for('display_question', question_id=question_id))
-    return render_template('add_answer.html', user=logged_in_user)
+    return render_template('add_answer.html', user=logged_in_user, question_id=question_id)
 
 
 @app.route('/answer/<answer_id>/vote_up')
@@ -197,14 +209,15 @@ def vote_down_answer(answer_id):
 @app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
 def edit_answer(answer_id):
 
+    answer_data = data_manager.get_answer_by_id(answer_id)
     logged_in_user = util.user_logged_in()
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
 
     if request.method == 'POST':
         new_message = request.form['message']
         data_manager.edit_answer(new_message, answer_id)
-        question_id = data_manager.get_question_id_by_answer_id(answer_id)
         return redirect('/question/' + str(question_id))
-    return render_template('edit_answer.html', user=logged_in_user)
+    return render_template('edit_answer.html', user=logged_in_user, question_id=question_id, answer_data=answer_data)
 
 
 @app.route('/answer/<answer_id>/delete')
@@ -229,35 +242,36 @@ def add_comment_to_question(question_id):
 
         return redirect('/question/' + str(question_id))
 
-    return render_template('add_comment_to_question.html', user=logged_in_user)
+    return render_template('add_comment_to_question.html', user=logged_in_user, question_id=question_id)
 
 
 @app.route('/answer/<answer_id>/new-comment', methods=['GET', 'POST'])
 def add_comment_to_answer(answer_id):
 
     logged_in_user = util.user_logged_in()
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
 
     if request.method == 'POST':
         message = request.form['message']
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         data_manager.add_comment_to_answer(answer_id, message, submission_time)
-        question_id = data_manager.get_question_id_by_answer_id(answer_id)
         return redirect('/question/' + str(question_id))
-    return render_template('add_comment_to_answer.html', user=logged_in_user)
+    return render_template('add_comment_to_answer.html', user=logged_in_user, question_id=question_id)
 
 
 @app.route('/comment/<comment_id>/edit', methods=['GET', 'POST'])
 def edit_comment(comment_id):
 
+    comment_data = data_manager.get_comment_by_id(comment_id)
     logged_in_user = util.user_logged_in()
+    question_id = data_manager.get_question_id_by_comment_id(comment_id)
 
     if request.method == 'POST':
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         new_message = request.form['message']
         data_manager.edit_comment(new_message, comment_id, submission_time)
-        question_id = data_manager.get_question_id_by_comment_id(comment_id)
         return redirect('/question/' + str(question_id))
-    return render_template('edit_comment.html', user=logged_in_user)
+    return render_template('edit_comment.html', user=logged_in_user, question_id=question_id, comment_data=comment_data)
 
 
 @app.route('/comment/<comment_id>/delete')

@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login page</title>
-</head>
-<body>
-    <form action="" method="POST">
-        <label for="email">Email</label>
-        <input name="email"><br>
-        <label for="password">Password</label>
-        <input name="password">
-        <button type="submit">Sign in</button>
-    </form>
-</body>
-</html>
+{% extends "template_raw.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<form action="" method="POST">
+    <label for="email">Email</label>
+    <input name="email"><br>
+    <label for="password">Password</label>
+    <input name="password">
+    <button type="submit">Sign in</button>
+</form>
+{% endblock %}
