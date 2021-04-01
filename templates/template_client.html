@@ -5,15 +5,15 @@
         <h3 id="site-name">Askmate<i>3</i></h3>
         <form id="search-form" action="/search" method="POST">
             <input type="text" name="search_phrase" placeholder="Enter search phrase">
-            <button type="submit">Search</button>
+            <button type="submit"><i class="fa fa-search"></i></button>
         </form>
         <div id="user-options">
             {% if user == False %}
             <a href="/login">Login</a>
             <a href="/register">Register</a>
             {% else %}
-            <a href="/user/{{ user.id }}">{{ user.email }}</a>
-            <a href="/logout">Log out</a>
+            <a href="/user/{{ user.id }}"><i class="fa fa-user"></i>{{ user.email }}</a>
+            <a href="/logout"><i class="fa fa-sign-out"></i>Log out</a>
             {% endif %}
         </div>
         <div id="right-buttons">

@@ -32,6 +32,11 @@ header > * {
     padding: 0 20px;
 }
 
+h3#site-name, h3#site-name > i {
+    font-size: 23px;
+    font-weight: 100;
+}
+
 header > #right-buttons {
     float: right;
 }
@@ -43,7 +48,7 @@ header a, header button {
     display: inline-block;
     padding: 5px 10px;
     line-height: 1em;
-    background: #d8d8d8;
+    background: #c5c5c5;
     transition: all ease-in 0.1s;
     cursor: pointer;
 }
@@ -51,6 +56,10 @@ header a, header button {
 header a:hover, header button:hover {
     background: #666;
     color: #9dc0ff;
+}
+
+header a > i.fa {
+    margin-right: 5px;
 }
 
 header input[name="search_phrase"] {
