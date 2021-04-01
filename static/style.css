@@ -104,3 +104,35 @@ div#content {
 .question-list > .question > .votes > a.down:hover {
     transform: translateY(5px);
 }
+
+.question-list > .question > .name {
+    display: block;
+}
+
+.question-list > .question > .name > * {
+    font-size: 0.8em;
+    color: #777;
+}
+
+.question-list > .question > .name > .title {
+    display: block;
+    font-size: 1.4em;
+    text-decoration: none;
+    font-weight: 100;
+    color: #1867f9;
+}
+
+.question-list > .question > .name > .id {
+    margin-right: 7px;
+}
+
+.question-list > .question > .name > .id:before {
+    content: '#';
+}
+
+.question-list > .question > .message {
+    padding: 10px;
+    background: white;
+    border: 1px dashed #b7b7b7;
+    margin-top: 5px;
+}
