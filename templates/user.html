@@ -5,7 +5,15 @@
     <a href="/">Back to home</a>
 {% endblock %}
 {% block wrappercontent %}
-<table>
+<table style="text-align: center; width: 100%">
+    <tr>
+        <th>Email</th>
+        <th>Registered</th>
+        <th>Questions</th>
+        <th>Answers</th>
+        <th>Comments</th>
+        <th>Reputation</th>
+    </tr>
     <tr>
         <td>{{ display_user.email }}</td>
         <td>{{ display_user.submission_time }}</td>

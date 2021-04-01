@@ -1,11 +1,17 @@
 {% extends "template_raw.html" %}
 {% block title %}Register{% endblock %}
 {% block content %}
-<form action="" method="POST">
-    <label for="email">Email</label>
-    <input name="email"><br>
-    <label for="password">Password</label>
-    <input name="password">
-    <button type="submit">Sign up</button>
-</form>
+<div class="window">
+    <form class="add-edit" action="" method="POST">
+        <div>
+            <label for="email">Email</label>
+            <input name="email">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input name="password">
+        </div>
+        <button type="submit">Sign up</button>
+    </form>
+</div>
 {% endblock %}

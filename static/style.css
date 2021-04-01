@@ -255,6 +255,10 @@ form.add-edit > div > input, form.add-edit > div > textarea {
     padding: 20px;
 }
 
+form.add-edit > div > input {
+    padding: 10px 20px;
+}
+
 form.add-edit button {
     display: block;
     margin-top: 10px;
@@ -270,4 +274,12 @@ form.add-edit label {
     font-size: 1.3em;
     font-weight: 100;
     margin-bottom: 5px;
+}
+
+.window {
+    width: 300px;
+    position: fixed;
+    left: calc(50% - 150px);
+    top: 50%;
+    transform: translateY(-50%);
 }
