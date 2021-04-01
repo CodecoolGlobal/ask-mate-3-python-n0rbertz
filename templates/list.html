@@ -1,7 +1,9 @@
 {% extends "template_client.html" %}
 {% block title %}Home{% endblock %}
 {% block headerbutton %}
+    {% if user != False %}
     <a href="/add-question"><i class="fa fa-plus"></i>New question</a>
+    {% endif %}
     <a href="/users"><i class="fa fa-users"></i>Users list</a>
 {% endblock %}
 {% block wrappercontent %}

@@ -27,17 +27,21 @@
         </label>
         <div class="message">{{ item.message }}</div>
         <div class="comments">
+            {% if user != False %}
             <a class="new-comment" href="/question/{{ item.id }}/new-comment"><i class="fa fa-plus"></i>New comment</a>
+            {% endif %}
             {% for comment in question_comments %}
                 <div class="comment">
                     <label class="name">
                         <span class="id">{{ comment.id }}</span>
                         <span class="date">{{ comment.submission_time }}</span>
                         <a class="title" href="/user/{{ comment.id }}">{{ comment.email }}</a>
+                        {% if user != False %}
                         <div class="operations">
                             <a href="/comment/{{ comment.id }}/edit"><i class="fa fa-pencil"></i></a>
                             <a href="/comment/{{ comment.id }}/delete"><i class="fa fa-trash"></i></a>
                         </div>
+                        {% endif %}
                     </label>
                     <div class="message">{{ comment.message }}</div>
                 </div>
@@ -60,17 +64,21 @@
         </label>
         <div class="message">{{ answer.message }}</div>
         <div class="comments">
+            {% if user != False %}
             <a class="new-comment" href="/answer/{{ answer.id }}/new-comment"><i class="fa fa-plus"></i>New comment</a>
+            {% endif %}
             {% for comment in answer_comments %}
                 <div class="comment">
                     <label class="name">
                         <span class="id">{{ comment.id }}</span>
                         <span class="date">{{ comment.submission_time }}</span>
                         <a class="title" href="/user/{{ comment.id }}">{{ comment.email }}</a>
+                        {% if user != False %}
                         <div class="operations">
                             <a href="/comment/{{ comment.id }}/edit"><i class="fa fa-pencil"></i></a>
                             <a href="/comment/{{ comment.id }}/delete"><i class="fa fa-trash"></i></a>
                         </div>
+                        {% endif %}
                     </label>
                     <div class="message">{{ comment.message }}</div>
                 </div>

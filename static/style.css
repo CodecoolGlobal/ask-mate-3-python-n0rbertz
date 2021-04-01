@@ -259,6 +259,10 @@ form.add-edit > div > input {
     padding: 10px 20px;
 }
 
+form.add-edit > div > textarea {
+    min-height: 300px;
+}
+
 form.add-edit button {
     display: block;
     margin-top: 10px;
