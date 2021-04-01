@@ -5,22 +5,21 @@
     <a href="/users">Users list</a>
 {% endblock %}
 {% block wrappercontent %}
-<table style="width:100%">
-    {% for question in questions %}
-    <tr>
-        <td>{{ question.id }}</td>
-        <td>{{ question.submission_time }}</td>
-        <td>{{ question.view_number }}</td>
-        <td>{{ question.vote_number }}</td>
-        <td><a href="/question/{{ question.id }}">{{ question.title }}</a></td>
-        <td>{{ question.message }}</td>
-        <td>{{ question.image }}</td>
-        {% if user != False %}
-            <td>{{ question.user_vote }}</td>
-            <td><a href="/question/{{ question.id }}/vote_up">Vote up</a></td>
-            <td><a href="/question/{{ question.id }}/vote_down">Vote down</a></td>
-        {% endif %}
-    </tr>
-    {% endfor %}
-</table>
+<div class="question-list">
+{% for question in questions %}
+    <div class="question">
+        <div class="votes">
+            {% if user != False %}<a class="votes up" href="/question/{{ question.id }}/vote_up"><i class="fa fa-arrow-up"></i></a>{% endif %}
+            <span class="count">{{ question.vote_number }}</span>
+            {% if user != False %}<a class="votes down" href="/question/{{ question.id }}/vote_down"><i class="fa fa-arrow-down"></i></a>{% endif %}
+        </div>
+        <label class="name">
+            <span class="id">{{ question.id }}</span>
+            <span class="date">{{ question.submission_time }}</span>
+            <a class="title" href="/question/{{ question.id }}">{{ question.title }}</a>
+        </label>
+        <div class="message">{{ question.message }}</div>
+    </div>
+{% endfor %}
+</div>
 {% endblock %}
