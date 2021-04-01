@@ -237,3 +237,37 @@ h2.answer-title {
     font-weight: 100;
     text-align: center;
 }
+
+form.add-edit > div {
+    margin-top: 10px;
+}
+
+form.add-edit > div:first-child {
+    margin-top: 0;
+}
+
+form.add-edit > div > * {
+    display: block;
+}
+
+form.add-edit > div > input, form.add-edit > div > textarea {
+    width: 100%;
+    padding: 20px;
+}
+
+form.add-edit button {
+    display: block;
+    margin-top: 10px;
+    padding: 10px 0;
+    width: 100%;
+    background: #c5c5c5;
+    color: #1867f9;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+form.add-edit label {
+    font-size: 1.3em;
+    font-weight: 100;
+    margin-bottom: 5px;
+}

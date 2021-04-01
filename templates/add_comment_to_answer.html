@@ -4,7 +4,7 @@
     <a href="/question/{{ question_id }}">Cancel</a>
 {% endblock %}
 {% block wrappercontent %}
-<form action="/answer/{{ answer_id }}/new-comment" method="POST">
+<form class="add-edit" action="/answer/{{ answer_id }}/new-comment" method="POST">
     <div>
         <label>Message</label>
         <textarea name="message"></textarea>
