@@ -79,18 +79,21 @@ div#content {
     padding: 110px 0 50px;
 }
 
-.question-list > .question {
+.question-list > .question,
+.answer-list > .answer {
     margin-top: 30px;
     position: relative;
     padding-left: 30px;
     min-height: 60px;
 }
 
-.question-list > .question:first-child {
+.question-list > .question:first-child,
+.answer-list > .answer:first-child {
     margin-top: 0;
 }
 
-.question-list > .question > .votes {
+.question-list > .question > .votes,
+.answer-list > .answer > .votes {
     position: absolute;
     left: 0;
     top: 0;
@@ -99,41 +102,50 @@ div#content {
     text-align: center;
 }
 
-.question-list > .question > .votes > * {
+.question-list > .question > .votes > *,
+.answer-list > .answer > .votes > * {
     display: block;
 }
 
-.question-list > .question > .votes > .count {
+.question-list > .question > .votes > .count,
+.answer-list > .answer > .votes > .count {
     font-weight: 500;
     font-size: 1.3em;
 }
 
-.question-list > .question > .votes > a {
+.question-list > .question > .votes > a,
+.answer-list > .answer > .votes > a {
     color: black;
     transition: all ease-in 0.1s;
     display: inline-block;
 }
-.question-list > .question > .votes > a.active {
+.question-list > .question > .votes > a.active,
+.answer-list > .answer > .votes > a.active {
     color: #1867f9;
 }
 
-.question-list > .question > .votes > a.up:hover {
+.question-list > .question > .votes > a.up:hover,
+.answer-list > .answer > .votes > a.up:hover {
     transform: translateY(-5px);
 }
-.question-list > .question > .votes > a.down:hover {
+.question-list > .question > .votes > a.down:hover,
+.answer-list > .answer > .votes > a.down:hover {
     transform: translateY(5px);
 }
 
-.question-list > .question > .name {
+.question-list > .question > .name,
+.answer-list > .answer > .name {
     display: block;
 }
 
-.question-list > .question > .name > * {
+.question-list > .question > .name > *,
+.answer-list > .answer > * {
     font-size: 0.8em;
     color: #777;
 }
 
-.question-list > .question > .name > .title {
+.question-list > .question > .name > .title,
+.answer-list > .answer > .name > .title {
     display: block;
     font-size: 1.4em;
     text-decoration: none;
@@ -141,17 +153,87 @@ div#content {
     color: #1867f9;
 }
 
-.question-list > .question > .name > .id {
+.question-list > .question > .name > .id,
+.answer-list > .answer > .name > .id {
     margin-right: 7px;
 }
 
-.question-list > .question > .name > .id:before {
+.question-list > .question > .name > .id:before,
+.answer-list > .answer > .name > .id:before {
     content: '#';
 }
 
-.question-list > .question > .message {
+.question-list > .question > .message,
+.answer-list > .answer > .message {
     padding: 10px;
     background: white;
     border: 1px dashed #b7b7b7;
     margin-top: 5px;
+}
+
+.comments {
+    padding-left: 30px;
+}
+
+.comments > a.new-comment {
+    margin: 10px 0;
+    display: block;
+    text-decoration: none;
+    color: #1867f9;
+    margin-left: -30px;
+}
+
+.comments > a.new-comment > i.fa {
+    margin-right: 5px;
+}
+
+.comments > .comment > .name > .title {
+    text-decoration: none;
+    font-size: 0.8em;
+    color: #1867f9;
+    margin-left: 10px;
+}
+
+.comments > .comment > .name > *:not(.title) {
+    font-size: 0.8em;
+    color: #666;
+}
+
+.comments > .comment {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.comments > .comment:last-child {
+    margin-bottom: 0;
+}
+
+.comments > .comment .operations {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+.comments > .comment .message {
+    font-size: 0.9em;
+    background: white;
+    padding: 6px;
+    margin-top: 5px;
+    border: 1px dashed #c3c3c3;
+}
+
+.comments > .comment .operations > a {
+    color: #1867f9;
+    margin-right: 5px;
+}
+
+.comments > .comment .operations > a:last-child {
+    margin-right: 0;
+}
+
+h2.answer-title {
+    margin-top: 30px;
+    font-size: 1.5em;
+    font-weight: 100;
+    text-align: center;
 }

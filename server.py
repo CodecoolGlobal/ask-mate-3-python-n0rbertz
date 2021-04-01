@@ -256,7 +256,7 @@ def add_comment_to_answer(answer_id):
         submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         data_manager.add_comment_to_answer(answer_id, message, submission_time)
         return redirect('/question/' + str(question_id))
-    return render_template('add_comment_to_answer.html', user=logged_in_user, question_id=question_id)
+    return render_template('add_comment_to_answer.html', user=logged_in_user, question_id=question_id, answer_id=answer_id)
 
 
 @app.route('/comment/<comment_id>/edit', methods=['GET', 'POST'])
