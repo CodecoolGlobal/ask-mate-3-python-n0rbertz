@@ -516,14 +516,16 @@ def get_hashed_password_by_email(cursor: RealDictCursor, email):
 
 @database_common.connection_handler
 def get_users_data(cursor: RealDictCursor):
-    query="""
-    SELECT "user".id, "user".email, "user".submission_time, COUNT(question.user_id) AS question_count,
-       COUNT(answer.user_id) AS answer_count, COUNT(comment.user_id) AS comment_count
-    FROM "user"
-    LEFT JOIN question ON "user".id = question.user_id
-    LEFT JOIN answer ON "user".id = answer.user_id
-    LEFT JOIN comment ON "user".id = comment.user_id
-    GROUP BY "user".id, "user".email, "user".submission_time;"""
+    query = """
+        SELECT "user".id, "user".email, "user".submission_time,
+        (SELECT COUNT(*) FROM question WHERE question.user_id = "user".id) as question_count,
+        (SELECT COUNT(*) FROM answer WHERE answer.user_id = "user".id) as answer_count,
+        (SELECT COUNT(*) FROM comment WHERE comment.user_id = "user".id) as comment_count
+        FROM "user"
+        INNER JOIN question ON "user".id = question.user_id
+        INNER JOIN answer ON "user".id = answer.user_id
+        INNER JOIN comment ON "user".id = comment.user_id
+        GROUP BY "user".id, "user".email, "user".submission_time;"""
     cursor.execute(query)
     user_data = cursor.fetchall().copy()
     for user_index in range(len(user_data)):
@@ -534,15 +536,17 @@ def get_users_data(cursor: RealDictCursor):
 @database_common.connection_handler
 def get_user_data(cursor: RealDictCursor, user_id):
     query = """
-        SELECT "user".id, "user".email, "user".submission_time, COUNT(question.user_id) AS question_count,
-        COUNT(answer.user_id) AS answer_count, COUNT(comment.user_id) AS comment_count
+        SELECT "user".id, "user".email, "user".submission_time,
+        (SELECT COUNT(*) FROM question WHERE question.user_id = %s) as question_count,
+        (SELECT COUNT(*) FROM answer WHERE answer.user_id = %s) as answer_count,
+        (SELECT COUNT(*) FROM comment WHERE comment.user_id = %s) as comment_count
         FROM "user"
-        LEFT JOIN question ON "user".id = question.user_id
-        LEFT JOIN answer ON "user".id = answer.user_id
-        LEFT JOIN comment ON "user".id = comment.user_id
+        INNER JOIN question ON "user".id = question.user_id
+        INNER JOIN answer ON "user".id = answer.user_id
+        INNER JOIN comment ON "user".id = comment.user_id
         WHERE "user".id = %s
         GROUP BY "user".id, "user".email, "user".submission_time;"""
-    cursor.execute(query, [user_id])
+    cursor.execute(query, [user_id, user_id, user_id, user_id])
     user_data = cursor.fetchall()
     if len(user_data) != 1:
         return False
