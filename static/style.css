@@ -59,3 +59,48 @@ div#content {
     margin: 0 auto;
     padding: 50px 0;
 }
+
+.question-list > .question {
+    margin-top: 30px;
+    position: relative;
+    padding-left: 30px;
+    min-height: 60px;
+}
+
+.question-list > .question:first-child {
+    margin-top: 0;
+}
+
+.question-list > .question > .votes {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30px;
+    bottom: 0;
+    text-align: center;
+}
+
+.question-list > .question > .votes > * {
+    display: block;
+}
+
+.question-list > .question > .votes > .count {
+    font-weight: 500;
+    font-size: 1.3em;
+}
+
+.question-list > .question > .votes > a {
+    color: black;
+    transition: all ease-in 0.1s;
+    display: inline-block;
+}
+.question-list > .question > .votes > a.active {
+    color: #1867f9;
+}
+
+.question-list > .question > .votes > a.up:hover {
+    transform: translateY(-5px);
+}
+.question-list > .question > .votes > a.down:hover {
+    transform: translateY(5px);
+}

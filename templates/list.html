@@ -9,9 +9,9 @@
 {% for question in questions %}
     <div class="question">
         <div class="votes">
-            {% if user != False %}<a class="votes up" href="/question/{{ question.id }}/vote_up"><i class="fa fa-arrow-up"></i></a>{% endif %}
+            {% if user != False %}<a class="votes up {% if question.user_vote == 1 %}active{% endif %}" href="/question/{{ question.id }}/vote_up"><i class="fa fa-arrow-up"></i></a>{% endif %}
             <span class="count">{{ question.vote_number }}</span>
-            {% if user != False %}<a class="votes down" href="/question/{{ question.id }}/vote_down"><i class="fa fa-arrow-down"></i></a>{% endif %}
+            {% if user != False %}<a class="votes down {% if question.user_vote == -1 %}active{% endif %}" href="/question/{{ question.id }}/vote_down"><i class="fa fa-arrow-down"></i></a>{% endif %}
         </div>
         <label class="name">
             <span class="id">{{ question.id }}</span>
